@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Settings {
-    public List<String> searchTags = new ArrayList<String>();
+    public GroundItemSettings groundItemSettings = new GroundItemSettings();
 
     public Settings(){
 

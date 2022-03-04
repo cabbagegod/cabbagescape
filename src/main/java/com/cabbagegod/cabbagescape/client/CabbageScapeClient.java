@@ -106,8 +106,8 @@ public class CabbageScapeClient implements ClientModInitializer {
                 if(itemStack == null || itemStack.isEmpty() || itemStack.getItem() == Items.AIR)
                     continue;
 
-                if(settings.searchTags.contains(Formatting.strip(itemStack.getName().getString().toLowerCase()))){
-                    client.player.playSound(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, .05f, 1);
+                if(settings.groundItemSettings.searchTags.contains(Formatting.strip(itemStack.getName().getString().toLowerCase()))){
+                    client.player.playSound(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, settings.groundItemSettings.volume, 1);
                     client.player.clientWorld.addParticle(ParticleTypes.ANGRY_VILLAGER, entity.getX() + .5f, entity.getY() + 1, entity.getZ() + 1, 1, 1, 1);
                     client.player.clientWorld.addParticle(ParticleTypes.ANGRY_VILLAGER, entity.getX() - .5f, entity.getY() + 1, entity.getZ() + 1, 1, 1, 1);
                     client.player.clientWorld.addParticle(ParticleTypes.ANGRY_VILLAGER, entity.getX() + .5f, entity.getY() + 1, entity.getZ(), 1, 1, 1);
