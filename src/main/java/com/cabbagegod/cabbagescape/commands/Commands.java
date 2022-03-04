@@ -2,6 +2,7 @@ package com.cabbagegod.cabbagescape.commands;
 
 import com.cabbagegod.cabbagescape.client.CabbageScapeClient;
 import com.mojang.brigadier.CommandDispatcher;
+import io.netty.util.internal.StringUtil;
 import net.fabricmc.fabric.api.client.command.v1.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v1.FabricClientCommandSource;
 import net.minecraft.client.MinecraftClient;
@@ -10,6 +11,7 @@ import net.minecraft.command.argument.MessageArgumentType;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
+import org.apache.commons.lang3.StringUtils;
 
 public class Commands {
     public static void register(){
@@ -19,10 +21,10 @@ public class Commands {
                                 .executes(context -> {
                                     Text text = ClientMessageArgumentType.getMessage(context, "item");
 
-                                    if(CabbageScapeClient.searchTags.contains(text.getString().toLowerCase())){
+                                    if(CabbageScapeClient.settings.searchTags.contains(text.getString().toLowerCase())){
                                         MinecraftClient.getInstance().player.sendMessage(new LiteralText("Item " + text.getString() + " was already in your list."), false);
                                     } else {
-                                        CabbageScapeClient.searchTags.add(text.getString().toLowerCase());
+                                        CabbageScapeClient.settings.searchTags.add(text.getString().toLowerCase());
                                         CabbageScapeClient.saveSettings();
                                         MinecraftClient.getInstance().player.sendMessage(new LiteralText("Item " + text.getString() + " has been added to your list."), false);
                                     }
@@ -33,8 +35,8 @@ public class Commands {
                                 .executes(context -> {
                                     Text text = ClientMessageArgumentType.getMessage(context, "item");
 
-                                    if(CabbageScapeClient.searchTags.contains(text.getString().toLowerCase())){
-                                        CabbageScapeClient.searchTags.remove(text.getString().toLowerCase());
+                                    if(CabbageScapeClient.settings.searchTags.contains(text.getString().toLowerCase())){
+                                        CabbageScapeClient.settings.searchTags.remove(text.getString().toLowerCase());
                                         CabbageScapeClient.saveSettings();
                                         MinecraftClient.getInstance().player.sendMessage(new LiteralText("Item " + text.getString() + " has been removed from your list."), false);
                                     } else {
@@ -45,9 +47,13 @@ public class Commands {
                 .then(ClientCommandManager.literal("list")
                         .executes(context -> {
                             assert MinecraftClient.getInstance().player != null;
-                            for(String tag : CabbageScapeClient.searchTags){
-                                MinecraftClient.getInstance().player.sendMessage(new LiteralText(tag), false);
+                            String tagList = "Ground Item List: ";
+                            for(String tag : CabbageScapeClient.settings.searchTags){
+                                tagList += tag + ",";
                             }
+                            tagList = StringUtils.chop(tagList);
+
+                            MinecraftClient.getInstance().player.sendMessage(new LiteralText(tagList), false);
                             return 1;
                         })));
     }

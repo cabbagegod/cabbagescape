@@ -2,11 +2,14 @@ package com.cabbagegod.cabbagescape.client;
 
 import com.cabbagegod.cabbagescape.commands.Commands;
 import com.cabbagegod.cabbagescape.data.DataHandler;
+import com.cabbagegod.cabbagescape.data.Settings;
+import com.google.gson.Gson;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.realms.util.JsonUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.ItemStack;
@@ -19,9 +22,12 @@ import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class CabbageScapeClient implements ClientModInitializer {
-    public static String searchTagDir = "searchTags";
+    public static String settingsDir = "settings";
+
+    public static Settings settings;
 
     //Keybinds
     private static KeyBinding homeKey;
@@ -29,7 +35,6 @@ public class CabbageScapeClient implements ClientModInitializer {
     private static KeyBinding debugKey;
 
     //Ground items
-    public static List<String> searchTags = new ArrayList<String>();
     private List<Entity> armorStands = new ArrayList<Entity>();
 
     @Override
@@ -45,25 +50,22 @@ public class CabbageScapeClient implements ClientModInitializer {
     }
 
     private void loadSettings(){
-        String tagData = DataHandler.ReadStringFromFile(searchTagDir);
-        if(tagData.isEmpty())
-            return;
+        String settingsJson = DataHandler.ReadStringFromFile(settingsDir);
 
-        String[] tags = tagData.split(",");
-        for(String tag : tags){
-            searchTags.add(tag);
+        if(settingsJson.isEmpty() || settingsJson.isBlank()){
+            settings = new Settings();
+            return;
         }
+
+        Gson gson = new Gson();
+        settings = gson.fromJson(settingsJson, Settings.class);
     }
 
     public static void saveSettings(){
-        String tagData = "";
-        for(String tag : searchTags){
-            tagData += tag + ",";
-        }
+        Gson gson = new Gson();
+        String settingsJson = gson.toJson(settings);
 
-        //Remove hanging ','
-        StringUtils.chop(tagData);
-        DataHandler.WriteStringToFile(tagData, searchTagDir);
+        DataHandler.WriteStringToFile(settingsJson, settingsDir);
     }
 
     private void setupEvents(){
@@ -104,14 +106,12 @@ public class CabbageScapeClient implements ClientModInitializer {
                 if(itemStack == null || itemStack.isEmpty() || itemStack.getItem() == Items.AIR)
                     continue;
 
-                for(String tag : searchTags){
-                    if(Formatting.strip(itemStack.getName().getString().toLowerCase()).equals(tag)){
-                        client.player.playSound(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, .05f, 1);
-                        client.player.clientWorld.addParticle(ParticleTypes.ANGRY_VILLAGER, entity.getX() + .5f, entity.getY() + 1, entity.getZ() + 1, 1, 1, 1);
-                        client.player.clientWorld.addParticle(ParticleTypes.ANGRY_VILLAGER, entity.getX() - .5f, entity.getY() + 1, entity.getZ() + 1, 1, 1, 1);
-                        client.player.clientWorld.addParticle(ParticleTypes.ANGRY_VILLAGER, entity.getX() + .5f, entity.getY() + 1, entity.getZ(), 1, 1, 1);
-                        client.player.clientWorld.addParticle(ParticleTypes.ANGRY_VILLAGER, entity.getX() - .5f, entity.getY() + 1, entity.getZ(), 1, 1, 1);
-                    }
+                if(settings.searchTags.contains(Formatting.strip(itemStack.getName().getString().toLowerCase()))){
+                    client.player.playSound(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, .05f, 1);
+                    client.player.clientWorld.addParticle(ParticleTypes.ANGRY_VILLAGER, entity.getX() + .5f, entity.getY() + 1, entity.getZ() + 1, 1, 1, 1);
+                    client.player.clientWorld.addParticle(ParticleTypes.ANGRY_VILLAGER, entity.getX() - .5f, entity.getY() + 1, entity.getZ() + 1, 1, 1, 1);
+                    client.player.clientWorld.addParticle(ParticleTypes.ANGRY_VILLAGER, entity.getX() + .5f, entity.getY() + 1, entity.getZ(), 1, 1, 1);
+                    client.player.clientWorld.addParticle(ParticleTypes.ANGRY_VILLAGER, entity.getX() - .5f, entity.getY() + 1, entity.getZ(), 1, 1, 1);
                 }
             }
         }
