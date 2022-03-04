@@ -54,6 +54,47 @@ public class Commands {
 
                                     return 1;
                                 })))
+                .then(ClientCommandManager.literal("contains")
+                    .then(ClientCommandManager.literal("add")
+                        .then(ClientCommandManager.argument("item", ClientMessageArgumentType.message())
+                                .executes(context -> {
+                                    Text text = ClientMessageArgumentType.getMessage(context, "item");
+
+                                    if(CabbageScapeClient.settings.groundItemSettings.containsTags.contains(text.getString().toLowerCase())){
+                                        MinecraftClient.getInstance().player.sendMessage(new LiteralText("Item " + text.getString() + " was already in your list."), false);
+                                    } else {
+                                        CabbageScapeClient.settings.groundItemSettings.containsTags.add(text.getString().toLowerCase());
+                                        CabbageScapeClient.saveSettings();
+                                        MinecraftClient.getInstance().player.sendMessage(new LiteralText("Item " + text.getString() + " has been added to your list."), false);
+                                    }
+                                    return 1;
+                                })))
+                    .then(ClientCommandManager.literal("remove")
+                        .then(ClientCommandManager.argument("item", ClientMessageArgumentType.message())
+                                .executes(context -> {
+                                    Text text = ClientMessageArgumentType.getMessage(context, "item");
+
+                                    if(CabbageScapeClient.settings.groundItemSettings.containsTags.contains(text.getString().toLowerCase())){
+                                        CabbageScapeClient.settings.groundItemSettings.containsTags.remove(text.getString().toLowerCase());
+                                        CabbageScapeClient.saveSettings();
+                                        MinecraftClient.getInstance().player.sendMessage(new LiteralText("Item " + text.getString() + " has been removed from your list."), false);
+                                    } else {
+                                        MinecraftClient.getInstance().player.sendMessage(new LiteralText("Item " + text.getString() + " was not in your list."), false);
+                                    }
+                                    return 1;
+                                })))
+                    .then(ClientCommandManager.literal("list")
+                          .executes(context -> {
+                              assert MinecraftClient.getInstance().player != null;
+                              String tagList = "Contains Item List: ";
+                              for(String tag : CabbageScapeClient.settings.groundItemSettings.containsTags){
+                                  tagList += tag + ",";
+                              }
+                              tagList = StringUtils.chop(tagList);
+
+                              MinecraftClient.getInstance().player.sendMessage(new LiteralText(tagList), false);
+                              return 1;
+                          })))
                 .then(ClientCommandManager.literal("list")
                         .executes(context -> {
                             assert MinecraftClient.getInstance().player != null;
