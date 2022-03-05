@@ -17,7 +17,3 @@ Planned:
 ## Setup
 
 Follow instructions on [the Fabric Loader website](https://fabricmc.net/) and then put the correct version of the mod into your mod folder, this should just be the latest version. 
-
-## License
-
-This template is available under the CC0 license. Feel free to learn from it and incorporate it in your own projects.
