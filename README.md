@@ -17,7 +17,7 @@ Planned:
 
 1) Download the latest version of the Fabric Loader from [the official website](https://fabricmc.net/) 
 2) Once it's installed, download the [fabric API](https://www.curseforge.com/minecraft/mc-mods/fabric-api/download)
-3) Then downlaod the latest version of [CabbageScape](https://github.com/cabbagegod/cabbagescape/releases) *Keep in mind, you will only need the .jar file*
+3) Then download the latest version of [CabbageScape](https://github.com/cabbagegod/cabbagescape/releases). *Keep in mind, you will only need the .jar file*
 4) Finally, put CabbageScape and the Fabric API into your mods folder, which you can find inside your .minecraft. *If there is no "mods" folder, simply create one.*
 
 Now you're ready to enjoy all the awesome perks of CabbageScape! Make sure you select the Fabric Loader inside your minecraft launcher when starting up the game!
