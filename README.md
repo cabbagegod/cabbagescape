@@ -11,6 +11,8 @@
 Planned:
 * Better Custom UI
 * Expansion of ground items functionality
+* Built in mini-map
+* Advanced clue scroll guide & tracker
 * *TBD*
 
 ## Setup
