@@ -51,7 +51,7 @@ public class VersionChecker {
             Release[] releases = gson.fromJson(response.body(), Release[].class);
 
             currentVersion = releases[0].tag_name;
-            if(!CabbageScapeClient.settings.lastVersion.equals(currentVersion)){
+            if(!CabbageScapeClient.settings.lastVersion.equals(currentVersion) && !releases[0].prerelease){
                 showUpdate = true;
             }
         } catch (URISyntaxException | InterruptedException | IOException e) {
