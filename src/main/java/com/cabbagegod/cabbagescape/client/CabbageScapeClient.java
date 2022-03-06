@@ -2,15 +2,15 @@ package com.cabbagegod.cabbagescape.client;
 
 import com.cabbagegod.cabbagescape.commands.Commands;
 import com.cabbagegod.cabbagescape.data.DataHandler;
-import com.cabbagegod.cabbagescape.data.GroundItemSettings;
 import com.cabbagegod.cabbagescape.data.Settings;
+import com.cabbagegod.cabbagescape.ui.UpdateScreen;
 import com.google.gson.Gson;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
-import net.minecraft.client.realms.util.JsonUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.ItemStack;
@@ -18,12 +18,10 @@ import net.minecraft.item.Items;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Formatting;
-import org.apache.commons.lang3.StringUtils;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class CabbageScapeClient implements ClientModInitializer {
     public static String settingsDir = "settings";
@@ -40,11 +38,12 @@ public class CabbageScapeClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        homeKey = KeybindHandler.createKeybind("home_key", "cabbagescape", GLFW.GLFW_KEY_H);
-        buildModeKey = KeybindHandler.createKeybind("buildmode_key", "cabbagescape", GLFW.GLFW_KEY_B);
-        debugKey = KeybindHandler.createKeybind("debug_key", "cabbagescape", 0);
+        homeKey = KeybindHandler.createKeybind("home_key", "category.cabbagescape", GLFW.GLFW_KEY_H);
+        buildModeKey = KeybindHandler.createKeybind("buildmode_key", "category.cabbagescape", GLFW.GLFW_KEY_B);
+        debugKey = KeybindHandler.createKeybind("debug_key", "category.cabbagescape", 0);
 
         loadSettings();
+        VersionChecker.Verify();
 
         Commands.register();
         setupEvents();
@@ -69,28 +68,33 @@ public class CabbageScapeClient implements ClientModInitializer {
         DataHandler.WriteStringToFile(settingsJson, settingsDir);
     }
 
+
     private void setupEvents(){
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            checkKeyPress(client);
-            checkSelectedDropItems(client);
+            if(client.world != null) {
+                checkKeyPress(client);
+                checkSelectedDropItems(client);
+            }
         });
-
         ClientEntityEvents.ENTITY_LOAD.register((entity, world) -> {
             if(entity.getType() == EntityType.ARMOR_STAND){
                 armorStands.add(entity);
             }
         });
-
+        ClientPlayConnectionEvents.JOIN.register(((handler, sender, client) -> {
+            if(VersionChecker.shouldShowUpdate())
+                client.setScreen(new UpdateScreen());
+        }));
         ClientEntityEvents.ENTITY_UNLOAD.register((entity, world) -> {
             if(entity.getType() == EntityType.ARMOR_STAND){
-                if(armorStands.contains(entity)) {
-                    armorStands.remove(entity);
-                }
+                armorStands.remove(entity);
             }
         });
     }
 
     private void checkKeyPress(MinecraftClient client){
+        assert client.player != null;
+
         if (homeKey.wasPressed()) {
             client.player.sendChatMessage("/home");
             client.player.playSound(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
@@ -98,6 +102,9 @@ public class CabbageScapeClient implements ClientModInitializer {
         if (buildModeKey.wasPressed()) {
             client.player.sendChatMessage("/con buildmode");
             client.player.playSound(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
+        }
+        if(debugKey.wasPressed()){
+            client.setScreen(new UpdateScreen());
         }
     }
 
