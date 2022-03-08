@@ -3,29 +3,46 @@ package com.cabbagegod.cabbagescape.client;
 import com.cabbagegod.cabbagescape.commands.Commands;
 import com.cabbagegod.cabbagescape.data.DataHandler;
 import com.cabbagegod.cabbagescape.data.Settings;
+import com.cabbagegod.cabbagescape.data.itemdata.ItemDisplay;
+import com.cabbagegod.cabbagescape.data.itemdata.ItemLore;
 import com.cabbagegod.cabbagescape.ui.UpdateScreen;
 import com.google.gson.Gson;
+import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolHandler;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientBlockEntityEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.networking.v1.ClientLoginConnectionEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
+import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
+import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
+import net.minecraft.datafixer.fix.ItemLoreToTextFix;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
+import net.minecraft.nbt.NbtTypes;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.text.ClickEvent;
+import net.minecraft.text.LiteralText;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.Hand;
+import net.minecraft.util.TypedActionResult;
 import org.lwjgl.glfw.GLFW;
+import org.lwjgl.system.CallbackI;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CabbageScapeClient implements ClientModInitializer {
     public static String settingsDir = "settings";
-
     public static Settings settings;
 
     //Keybinds
@@ -47,8 +64,10 @@ public class CabbageScapeClient implements ClientModInitializer {
 
         Commands.register();
         setupEvents();
+        EventRegisterer.register();
     }
 
+    //Loads json file as settings
     private void loadSettings(){
         String settingsJson = DataHandler.ReadStringFromFile(settingsDir);
 
@@ -61,6 +80,7 @@ public class CabbageScapeClient implements ClientModInitializer {
         settings = gson.fromJson(settingsJson, Settings.class);
     }
 
+    //Saves settings as a json file
     public static void saveSettings(){
         Gson gson = new Gson();
         String settingsJson = gson.toJson(settings);
@@ -68,7 +88,8 @@ public class CabbageScapeClient implements ClientModInitializer {
         DataHandler.WriteStringToFile(settingsJson, settingsDir);
     }
 
-
+    //These are all the events that the mod uses
+    //In the future these should probably get moved into their own classes
     private void setupEvents(){
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if(client.world != null) {
@@ -92,6 +113,7 @@ public class CabbageScapeClient implements ClientModInitializer {
         });
     }
 
+    //Is called every client tick to see if a hotkey was pressed
     private void checkKeyPress(MinecraftClient client){
         assert client.player != null;
 
@@ -108,6 +130,7 @@ public class CabbageScapeClient implements ClientModInitializer {
         }
     }
 
+    //This disaster logic is used to find/handle ground items
     private void checkSelectedDropItems(MinecraftClient client){
         for (Entity entity: armorStands) {
             for (ItemStack itemStack : entity.getArmorItems()){
