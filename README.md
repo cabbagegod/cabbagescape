@@ -6,7 +6,8 @@
 
 * Home teleport keybinding
 * Build Mode Toggle keybinding
-* Gound Items (/grounditems) [**WIP**]
+* Gound Items (/grounditems)
+* Clue Helper
 
 Planned:
 * Better Custom UI
