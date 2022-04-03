@@ -11,6 +11,7 @@
 
 Planned:
 * Potion Timers
+* HP Notifier
 * Better Custom UI
 * Expansion of ground items functionality
 * Built in mini-map
