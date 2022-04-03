@@ -170,10 +170,10 @@ public class CabbageScapeClient implements ClientModInitializer {
                             wasTriggered = true;
 
                             client.player.playSound(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, settings.groundItemSettings.volume, 1);
-                            client.player.clientWorld.addParticle(ParticleTypes.ANGRY_VILLAGER, entityPos.getX() -.5f, entityPos.getY() - 1, entityPos.getZ() -.5f, 1, 1, 1);
-                            client.player.clientWorld.addParticle(ParticleTypes.ANGRY_VILLAGER, entityPos.getX() -.5f, entityPos.getY() - 1, entityPos.getZ() + .5f, 1, 1, 1);
-                            client.player.clientWorld.addParticle(ParticleTypes.ANGRY_VILLAGER, entityPos.getX() + .5f, entityPos.getY() - 1, entityPos.getZ() + .5f, 1, 1, 1);
-                            client.player.clientWorld.addParticle(ParticleTypes.ANGRY_VILLAGER, entityPos.getX() + .5f, entityPos.getY() - 1, entityPos.getZ() - .5f, 1, 1, 1);
+                            client.player.clientWorld.addParticle(ParticleTypes.ANGRY_VILLAGER, entityPos.getX(), entityPos.getY() - 1, entityPos.getZ(), 1, 1, 1);
+                            client.player.clientWorld.addParticle(ParticleTypes.ANGRY_VILLAGER, entityPos.getX(), entityPos.getY() - 1, entityPos.getZ() + 1, 1, 1, 1);
+                            client.player.clientWorld.addParticle(ParticleTypes.ANGRY_VILLAGER, entityPos.getX() + 1, entityPos.getY() - 1, entityPos.getZ() + 1, 1, 1, 1);
+                            client.player.clientWorld.addParticle(ParticleTypes.ANGRY_VILLAGER, entityPos.getX() + 1, entityPos.getY() - 1, entityPos.getZ(), 1, 1, 1);
                             break;
                         }
                     }
