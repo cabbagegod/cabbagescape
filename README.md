@@ -10,6 +10,7 @@
 * Clue Helper
 
 Planned:
+* Potion Timers
 * Better Custom UI
 * Expansion of ground items functionality
 * Built in mini-map
