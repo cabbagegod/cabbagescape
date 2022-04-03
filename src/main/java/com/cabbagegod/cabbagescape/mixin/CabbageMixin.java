@@ -11,6 +11,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class CabbageMixin {
 	@Inject(at = @At("HEAD"), method = "init()V")
 	private void init(CallbackInfo info) {
-		Main.LOGGER.info("yo");
+		Main.LOGGER.info("mixins yo");
 	}
 }

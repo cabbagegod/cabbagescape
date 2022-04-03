@@ -1,5 +1,7 @@
 package com.cabbagegod.cabbagescape.client;
 
+import com.cabbagegod.cabbagescape.blockoutline.BlockOutlineManager;
+import com.cabbagegod.cabbagescape.blockoutline.PersistentOutlineRenderer;
 import com.cabbagegod.cabbagescape.commands.Commands;
 import com.cabbagegod.cabbagescape.data.DataHandler;
 import com.cabbagegod.cabbagescape.data.Settings;
@@ -34,6 +36,9 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.util.shape.VoxelShapes;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.system.CallbackI;
 
@@ -43,6 +48,7 @@ import java.util.List;
 
 public class CabbageScapeClient implements ClientModInitializer {
     public static String settingsDir = "settings";
+    public static String version = "pre-a1.1.1+1.18.2";
     public static Settings settings;
 
     //Keybinds
@@ -65,6 +71,8 @@ public class CabbageScapeClient implements ClientModInitializer {
         Commands.register();
         setupEvents();
         EventRegisterer.register();
+
+        BlockOutlineManager.getInstance().add(PersistentOutlineRenderer.getInstance());
     }
 
     //Loads json file as settings
@@ -109,6 +117,12 @@ public class CabbageScapeClient implements ClientModInitializer {
         ClientEntityEvents.ENTITY_UNLOAD.register((entity, world) -> {
             if(entity.getType() == EntityType.ARMOR_STAND){
                 armorStands.remove(entity);
+
+                BlockPos entityPos = entity.getBlockPos().add(0,2,1);
+
+                if(PersistentOutlineRenderer.getInstance().contains(entityPos)){
+                    PersistentOutlineRenderer.getInstance().removePos(entityPos);
+                }
             }
         });
     }
@@ -139,22 +153,36 @@ public class CabbageScapeClient implements ClientModInitializer {
 
                 //Oh god what have I done
 
+                boolean wasTriggered = false;
+
+                BlockPos entityPos = new BlockPos(entity.getBlockX(), entity.getBlockY(), entity.getBlockZ()).add(0,2,1);
+
                 if(settings.groundItemSettings.searchTags.contains(Formatting.strip(itemStack.getName().getString().toLowerCase()))){
+                    wasTriggered = true;
+
                     client.player.playSound(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, settings.groundItemSettings.volume, 1);
-                    client.player.clientWorld.addParticle(ParticleTypes.ANGRY_VILLAGER, entity.getX() + .5f, entity.getY() + 1, entity.getZ() + 1, 1, 1, 1);
-                    client.player.clientWorld.addParticle(ParticleTypes.ANGRY_VILLAGER, entity.getX() - .5f, entity.getY() + 1, entity.getZ() + 1, 1, 1, 1);
-                    client.player.clientWorld.addParticle(ParticleTypes.ANGRY_VILLAGER, entity.getX() + .5f, entity.getY() + 1, entity.getZ(), 1, 1, 1);
-                    client.player.clientWorld.addParticle(ParticleTypes.ANGRY_VILLAGER, entity.getX() - .5f, entity.getY() + 1, entity.getZ(), 1, 1, 1);
+                    client.player.clientWorld.addParticle(ParticleTypes.ANGRY_VILLAGER, entityPos.getX(), entityPos.getY() - 1, entityPos.getZ(), 1, 1, 1);
+                    client.player.clientWorld.addParticle(ParticleTypes.ANGRY_VILLAGER, entityPos.getX(), entityPos.getY() - 1, entityPos.getZ() + 1, 1, 1, 1);
+                    client.player.clientWorld.addParticle(ParticleTypes.ANGRY_VILLAGER, entityPos.getX() + 1, entityPos.getY() - 1, entityPos.getZ() + 1, 1, 1, 1);
+                    client.player.clientWorld.addParticle(ParticleTypes.ANGRY_VILLAGER, entityPos.getX() + 1, entityPos.getY() - 1, entityPos.getZ(), 1, 1, 1);
                 } else {
                     for(String tag : settings.groundItemSettings.containsTags){
                         if(Formatting.strip(itemStack.getName().getString().toLowerCase()).contains(tag)){
+                            wasTriggered = true;
+
                             client.player.playSound(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, settings.groundItemSettings.volume, 1);
-                            client.player.clientWorld.addParticle(ParticleTypes.ANGRY_VILLAGER, entity.getX() + .5f, entity.getY() + 1, entity.getZ() + 1, 1, 1, 1);
-                            client.player.clientWorld.addParticle(ParticleTypes.ANGRY_VILLAGER, entity.getX() - .5f, entity.getY() + 1, entity.getZ() + 1, 1, 1, 1);
-                            client.player.clientWorld.addParticle(ParticleTypes.ANGRY_VILLAGER, entity.getX() + .5f, entity.getY() + 1, entity.getZ(), 1, 1, 1);
-                            client.player.clientWorld.addParticle(ParticleTypes.ANGRY_VILLAGER, entity.getX() - .5f, entity.getY() + 1, entity.getZ(), 1, 1, 1);
+                            client.player.clientWorld.addParticle(ParticleTypes.ANGRY_VILLAGER, entityPos.getX(), entityPos.getY() - 1, entityPos.getZ(), 1, 1, 1);
+                            client.player.clientWorld.addParticle(ParticleTypes.ANGRY_VILLAGER, entityPos.getX(), entityPos.getY() - 1, entityPos.getZ() + 1, 1, 1, 1);
+                            client.player.clientWorld.addParticle(ParticleTypes.ANGRY_VILLAGER, entityPos.getX() + 1, entityPos.getY() - 1, entityPos.getZ() + 1, 1, 1, 1);
+                            client.player.clientWorld.addParticle(ParticleTypes.ANGRY_VILLAGER, entityPos.getX() + 1, entityPos.getY() - 1, entityPos.getZ(), 1, 1, 1);
+                            break;
                         }
                     }
+                }
+
+                if(wasTriggered) {
+                    if(!PersistentOutlineRenderer.getInstance().contains(entity.getBlockPos()))
+                        PersistentOutlineRenderer.getInstance().addPos(entityPos);
                 }
             }
         }

@@ -51,7 +51,13 @@ public class VersionChecker {
             Release[] releases = gson.fromJson(response.body(), Release[].class);
 
             currentVersion = releases[0].tag_name;
+            //Show update message if the last saved version in settings and current versions are different to the one on Github
             if(!CabbageScapeClient.settings.lastVersion.equals(currentVersion) && !releases[0].prerelease){
+                if(CabbageScapeClient.version.equals(currentVersion)){
+                    CabbageScapeClient.settings.lastVersion = currentVersion;
+                    CabbageScapeClient.saveSettings();
+                    return;
+                }
                 showUpdate = true;
             }
         } catch (URISyntaxException | InterruptedException | IOException e) {
