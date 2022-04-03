@@ -1,6 +1,7 @@
 package com.cabbagegod.cabbagescape.data.itemdata;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
@@ -21,7 +22,11 @@ public class ItemDisplay {
         Gson gson = new Gson();
 
         for(String string : this.lore){
-            lore.add(gson.fromJson(string, ItemLore.class));
+            try {
+                lore.add(gson.fromJson(string, ItemLore.class));
+            } catch (JsonSyntaxException e){
+                System.out.println(e.getMessage());
+            }
         }
 
         return lore;

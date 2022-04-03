@@ -4,6 +4,7 @@
   "package": "com.cabbagegod.cabbagescape.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "WorldRendererMixin"
   ],
   "client": [
     "CabbageMixin"

@@ -1,0 +1,4 @@
+None of this would have been possible without DarkKronicle. THANK YOUUUU
+https://github.com/DarkKronicle/BetterBlockOutline
+
+Most of this dir is just lightly modified versions of their work.
