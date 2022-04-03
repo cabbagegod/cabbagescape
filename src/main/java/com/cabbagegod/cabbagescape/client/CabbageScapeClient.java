@@ -48,6 +48,7 @@ import java.util.List;
 
 public class CabbageScapeClient implements ClientModInitializer {
     public static String settingsDir = "settings";
+    public static String version = "pre-a1.1.1+1.18.2";
     public static Settings settings;
 
     //Keybinds
