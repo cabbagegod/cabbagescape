@@ -59,6 +59,9 @@ public class GroundItemsManager {
     public static void OnArmorStandUnload(Entity entity, ClientWorld world){
         if(entity.getType() == EntityType.ARMOR_STAND){
             RemoveArmorStand(entity);
+            BlockPos itemPos = new BlockPos(entity.getBlockX(), entity.getBlockY(), entity.getBlockZ()).add(0,2,1);
+            
+            PersistentOutlineRenderer.getInstance().removePos(itemPos);
         }
     }
 
