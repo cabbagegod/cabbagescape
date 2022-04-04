@@ -13,15 +13,14 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
-import org.checkerframework.checker.units.qual.C;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class GroundItemsManager {
     //Ground items
@@ -37,13 +36,10 @@ public class GroundItemsManager {
         armorStands.remove(e);
     }
 
-    public static boolean AddArmorStand(Entity e){
+    public static void AddArmorStand(Entity e){
         if(EntityIsArmorStand(e)){
             armorStands.add(e);
-
-            return true;
         }
-        return false;
     }
 
     private static boolean EntityIsArmorStand(Entity e){
@@ -60,7 +56,7 @@ public class GroundItemsManager {
         if(entity.getType() == EntityType.ARMOR_STAND){
             RemoveArmorStand(entity);
             BlockPos itemPos = new BlockPos(entity.getBlockX(), entity.getBlockY(), entity.getBlockZ()).add(0,2,1);
-            
+
             PersistentOutlineRenderer.getInstance().removePos(itemPos);
         }
     }
@@ -77,8 +73,8 @@ public class GroundItemsManager {
             for (ItemStack itemStack : entity.getArmorItems()){
                 if(itemStack == null || itemStack.isEmpty() || itemStack.getItem() == Items.AIR)
                     continue;
-                BlockPos itemPos = new BlockPos(entity.getBlockX(), entity.getBlockY(), entity.getBlockZ()).add(0,2,1);
 
+                BlockPos itemPos = new BlockPos(entity.getBlockX(), entity.getBlockY(), entity.getBlockZ()).add(0,2,1);
                 Settings settings = CabbageScapeClient.settings;
 
                 //If the user's list of tags contains the name of the item that the armor stand is holding
@@ -86,7 +82,8 @@ public class GroundItemsManager {
                     DisplayGroundItem(itemPos, settings.groundItemSettings.volume);
                 } else {
                     for(String tag : settings.groundItemSettings.containsTags){
-                        if(Formatting.strip(itemStack.getName().getString().toLowerCase()).contains(tag)){
+                        if(Objects.requireNonNull(Formatting.strip(itemStack.getName().getString().toLowerCase())).contains(tag)){
+                            DisplayGroundItem(itemPos, settings.groundItemSettings.volume);
                             break;
                         }
                     }
