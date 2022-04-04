@@ -1,48 +1,31 @@
 package com.cabbagegod.cabbagescape.client;
 
-import com.cabbagegod.cabbagescape.blockoutline.BlockOutlineManager;
-import com.cabbagegod.cabbagescape.blockoutline.PersistentOutlineRenderer;
+import com.cabbagegod.cabbagescape.client.blockoutline.BlockOutlineManager;
+import com.cabbagegod.cabbagescape.client.blockoutline.PersistentOutlineRenderer;
+import com.cabbagegod.cabbagescape.client.blockoutline.Vector3f;
 import com.cabbagegod.cabbagescape.commands.Commands;
 import com.cabbagegod.cabbagescape.data.DataHandler;
 import com.cabbagegod.cabbagescape.data.Settings;
-import com.cabbagegod.cabbagescape.data.itemdata.ItemDisplay;
-import com.cabbagegod.cabbagescape.data.itemdata.ItemLore;
 import com.cabbagegod.cabbagescape.ui.UpdateScreen;
+import com.cabbagegod.cabbagescape.util.ParticleUtil;
 import com.google.gson.Gson;
-import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolHandler;
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientBlockEntityEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.networking.v1.ClientLoginConnectionEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
-import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
-import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
-import net.minecraft.datafixer.fix.ItemLoreToTextFix;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
-import net.minecraft.nbt.NbtTypes;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.ClickEvent;
-import net.minecraft.text.LiteralText;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
 import org.lwjgl.glfw.GLFW;
-import org.lwjgl.system.CallbackI;
 
-import java.lang.reflect.Array;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -96,6 +79,9 @@ public class CabbageScapeClient implements ClientModInitializer {
         DataHandler.WriteStringToFile(settingsJson, settingsDir);
     }
 
+    BlockPos[] positions = new BlockPos[4];
+    Color[] colors = {new Color(6, 145, 180), new Color(77, 127, 69), new Color(194, 182, 70), new Color(172, 55, 125)};
+
     //These are all the events that the mod uses
     //In the future these should probably get moved into their own classes
     private void setupEvents(){
@@ -103,6 +89,13 @@ public class CabbageScapeClient implements ClientModInitializer {
             if(client.world != null) {
                 checkKeyPress(client);
                 checkSelectedDropItems(client);
+
+                for (int i = 0; i < positions.length; i++) {
+                    if(positions[i] != null){
+                        BlockPos pos = positions[i];
+                        ParticleUtil.CreateSpiralParticle(new Vector3f(pos.getX() + .5f, pos.getY(), pos.getZ() + .5f), colors[i]);
+                    }
+                }
             }
         });
         ClientEntityEvents.ENTITY_LOAD.register((entity, world) -> {
@@ -140,7 +133,16 @@ public class CabbageScapeClient implements ClientModInitializer {
             client.player.playSound(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
         }
         if(debugKey.wasPressed()){
-            client.setScreen(new UpdateScreen());
+            BlockPos pos = client.player.getBlockPos();
+
+            for (int i = 0; i < positions.length; i++) {
+                if(positions[i] == null){
+                    positions[i] = pos;
+                    return;
+                }
+            }
+
+            positions = new BlockPos[4];
         }
     }
 
