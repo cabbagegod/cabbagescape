@@ -1,4 +1,4 @@
-package com.cabbagegod.cabbagescape.blockoutline;
+package com.cabbagegod.cabbagescape.client.blockoutline;
 
 import net.minecraft.client.util.math.Vector3d;
 import net.minecraft.util.math.Quaternion;

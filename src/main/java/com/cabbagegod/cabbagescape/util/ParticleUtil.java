@@ -1,8 +1,7 @@
 package com.cabbagegod.cabbagescape.util;
 
-import com.cabbagegod.cabbagescape.blockoutline.Vector3f;
+import com.cabbagegod.cabbagescape.client.blockoutline.Vector3f;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.util.math.Vector3d;
 import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.util.math.BlockPos;

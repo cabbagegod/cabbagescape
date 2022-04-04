@@ -3,6 +3,7 @@ package com.cabbagegod.cabbagescape.client;
 import com.cabbagegod.cabbagescape.client.blockoutline.BlockOutlineManager;
 import com.cabbagegod.cabbagescape.client.blockoutline.PersistentOutlineRenderer;
 import com.cabbagegod.cabbagescape.client.blockoutline.Vector3f;
+import com.cabbagegod.cabbagescape.client.grounditems.GroundItemsManager;
 import com.cabbagegod.cabbagescape.commands.Commands;
 import com.cabbagegod.cabbagescape.data.DataHandler;
 import com.cabbagegod.cabbagescape.data.Settings;
@@ -39,9 +40,6 @@ public class CabbageScapeClient implements ClientModInitializer {
     private static KeyBinding buildModeKey;
     private static KeyBinding debugKey;
 
-    //Ground items
-    private List<Entity> armorStands = new ArrayList<Entity>();
-
     @Override
     public void onInitializeClient() {
         homeKey = KeybindHandler.createKeybind("home_key", "category.cabbagescape", GLFW.GLFW_KEY_H);
@@ -54,6 +52,7 @@ public class CabbageScapeClient implements ClientModInitializer {
         Commands.register();
         setupEvents();
         EventRegisterer.register();
+        GroundItemsManager.register();
 
         BlockOutlineManager.getInstance().add(PersistentOutlineRenderer.getInstance());
     }
@@ -79,6 +78,7 @@ public class CabbageScapeClient implements ClientModInitializer {
         DataHandler.WriteStringToFile(settingsJson, settingsDir);
     }
 
+    //Debug settings
     BlockPos[] positions = new BlockPos[4];
     Color[] colors = {new Color(6, 145, 180), new Color(77, 127, 69), new Color(194, 182, 70), new Color(172, 55, 125)};
 
@@ -88,7 +88,6 @@ public class CabbageScapeClient implements ClientModInitializer {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if(client.world != null) {
                 checkKeyPress(client);
-                checkSelectedDropItems(client);
 
                 for (int i = 0; i < positions.length; i++) {
                     if(positions[i] != null){
@@ -98,26 +97,11 @@ public class CabbageScapeClient implements ClientModInitializer {
                 }
             }
         });
-        ClientEntityEvents.ENTITY_LOAD.register((entity, world) -> {
-            if(entity.getType() == EntityType.ARMOR_STAND){
-                armorStands.add(entity);
-            }
-        });
+
         ClientPlayConnectionEvents.JOIN.register(((handler, sender, client) -> {
             if(VersionChecker.shouldShowUpdate())
                 client.setScreen(new UpdateScreen());
         }));
-        ClientEntityEvents.ENTITY_UNLOAD.register((entity, world) -> {
-            if(entity.getType() == EntityType.ARMOR_STAND){
-                armorStands.remove(entity);
-
-                BlockPos entityPos = entity.getBlockPos().add(0,2,1);
-
-                if(PersistentOutlineRenderer.getInstance().contains(entityPos)){
-                    PersistentOutlineRenderer.getInstance().removePos(entityPos);
-                }
-            }
-        });
     }
 
     //Is called every client tick to see if a hotkey was pressed
@@ -143,50 +127,6 @@ public class CabbageScapeClient implements ClientModInitializer {
             }
 
             positions = new BlockPos[4];
-        }
-    }
-
-    //This disaster logic is used to find/handle ground items
-    private void checkSelectedDropItems(MinecraftClient client){
-        for (Entity entity: armorStands) {
-            for (ItemStack itemStack : entity.getArmorItems()){
-                if(itemStack == null || itemStack.isEmpty() || itemStack.getItem() == Items.AIR)
-                    continue;
-
-                //Oh god what have I done
-
-                boolean wasTriggered = false;
-
-                BlockPos entityPos = new BlockPos(entity.getBlockX(), entity.getBlockY(), entity.getBlockZ()).add(0,2,1);
-
-                if(settings.groundItemSettings.searchTags.contains(Formatting.strip(itemStack.getName().getString().toLowerCase()))){
-                    wasTriggered = true;
-
-                    client.player.playSound(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, settings.groundItemSettings.volume, 1);
-                    client.player.clientWorld.addParticle(ParticleTypes.ANGRY_VILLAGER, entityPos.getX(), entityPos.getY() - 1, entityPos.getZ(), 1, 1, 1);
-                    client.player.clientWorld.addParticle(ParticleTypes.ANGRY_VILLAGER, entityPos.getX(), entityPos.getY() - 1, entityPos.getZ() + 1, 1, 1, 1);
-                    client.player.clientWorld.addParticle(ParticleTypes.ANGRY_VILLAGER, entityPos.getX() + 1, entityPos.getY() - 1, entityPos.getZ() + 1, 1, 1, 1);
-                    client.player.clientWorld.addParticle(ParticleTypes.ANGRY_VILLAGER, entityPos.getX() + 1, entityPos.getY() - 1, entityPos.getZ(), 1, 1, 1);
-                } else {
-                    for(String tag : settings.groundItemSettings.containsTags){
-                        if(Formatting.strip(itemStack.getName().getString().toLowerCase()).contains(tag)){
-                            wasTriggered = true;
-
-                            client.player.playSound(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, settings.groundItemSettings.volume, 1);
-                            client.player.clientWorld.addParticle(ParticleTypes.ANGRY_VILLAGER, entityPos.getX(), entityPos.getY() - 1, entityPos.getZ(), 1, 1, 1);
-                            client.player.clientWorld.addParticle(ParticleTypes.ANGRY_VILLAGER, entityPos.getX(), entityPos.getY() - 1, entityPos.getZ() + 1, 1, 1, 1);
-                            client.player.clientWorld.addParticle(ParticleTypes.ANGRY_VILLAGER, entityPos.getX() + 1, entityPos.getY() - 1, entityPos.getZ() + 1, 1, 1, 1);
-                            client.player.clientWorld.addParticle(ParticleTypes.ANGRY_VILLAGER, entityPos.getX() + 1, entityPos.getY() - 1, entityPos.getZ(), 1, 1, 1);
-                            break;
-                        }
-                    }
-                }
-
-                if(wasTriggered) {
-                    if(!PersistentOutlineRenderer.getInstance().contains(entity.getBlockPos()))
-                        PersistentOutlineRenderer.getInstance().addPos(entityPos);
-                }
-            }
         }
     }
 }

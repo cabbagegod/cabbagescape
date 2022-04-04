@@ -1,11 +1,8 @@
 package com.cabbagegod.cabbagescape.mixin;
 
-import com.cabbagegod.cabbagescape.blockoutline.BlockOutlineManager;
-import net.minecraft.block.BlockState;
+import com.cabbagegod.cabbagescape.client.blockoutline.BlockOutlineManager;
 import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Matrix4f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

@@ -1,13 +1,11 @@
 package com.cabbagegod.cabbagescape.commands;
 
-import com.cabbagegod.cabbagescape.blockoutline.PersistentOutlineRenderer;
 import com.cabbagegod.cabbagescape.client.CabbageScapeClient;
 import com.mojang.brigadier.arguments.FloatArgumentType;
 import net.fabricmc.fabric.api.client.command.v1.ClientCommandManager;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
-import net.minecraft.util.math.BlockPos;
 import org.apache.commons.lang3.StringUtils;
 
 public class Commands {
