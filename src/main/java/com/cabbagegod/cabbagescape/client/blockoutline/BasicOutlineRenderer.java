@@ -1,5 +1,7 @@
 package com.cabbagegod.cabbagescape.client.blockoutline;
 
+import com.cabbagegod.cabbagescape.client.CabbageScapeClient;
+import com.cabbagegod.cabbagescape.data.GroundItemSettings;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.GameRenderer;
@@ -66,14 +68,15 @@ public class BasicOutlineRenderer implements IOverlayRenderer {
         RenderSystem.disableCull();
         RenderSystem.depthMask(false);
 
+        GroundItemSettings settings = CabbageScapeClient.settings.groundItemSettings;
 
         // Allow glass and other translucent/transparent objects to render properly
-        Color fillColor = new Color(19,23,158, 0);
+        Color fillColor = new Color((int) settings.itemRed,(int) settings.itemGreen,(int) settings.itemBlue, 0);
         if (fillColor.getAlpha() > 0) {
             drawOutlineBoxes(tessellator, matrices, buffer, camDif, fillColor, outline);
         }
 
-        Color lineColor = new Color(255, 0, 0, 255);
+        Color lineColor = new Color((int) settings.itemRed,(int) settings.itemGreen,(int) settings.itemBlue, 255);
         if (lineColor.getAlpha() > 0) {
             drawOutlineLines(tessellator, matrices, buffer, camDif, lineColor, outline);
         }

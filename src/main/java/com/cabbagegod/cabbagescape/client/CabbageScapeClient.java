@@ -92,7 +92,7 @@ public class CabbageScapeClient implements ClientModInitializer {
                 for (int i = 0; i < positions.length; i++) {
                     if(positions[i] != null){
                         BlockPos pos = positions[i];
-                        ParticleUtil.CreateSpiralParticle(new Vector3f(pos.getX() + .5f, pos.getY(), pos.getZ() + .5f), colors[i]);
+                        ParticleUtil.CreateSpiralParticle(new Vector3f(pos.getX() + .5f, pos.getY(), pos.getZ() + .5f), colors[i], (int) settings.groundItemSettings.particleCount);
                     }
                 }
             }

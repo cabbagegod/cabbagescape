@@ -3,6 +3,7 @@ package com.cabbagegod.cabbagescape.client.grounditems;
 import com.cabbagegod.cabbagescape.client.CabbageScapeClient;
 import com.cabbagegod.cabbagescape.client.blockoutline.PersistentOutlineRenderer;
 import com.cabbagegod.cabbagescape.client.blockoutline.Vector3f;
+import com.cabbagegod.cabbagescape.data.GroundItemSettings;
 import com.cabbagegod.cabbagescape.data.Settings;
 import com.cabbagegod.cabbagescape.util.ParticleUtil;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
@@ -93,15 +94,21 @@ public class GroundItemsManager {
     }
 
     private static void DisplayGroundItem(BlockPos itemPos, float volume){
+        GroundItemSettings settings = CabbageScapeClient.settings.groundItemSettings;
+
         //Get the center of the block that the item is on
         Vector3f itemPosCenter = new Vector3f(itemPos.getX() + .5f, itemPos.getY(), itemPos.getZ() + .5f);
-        //Create the spiral particle effect
-        ParticleUtil.CreateSpiralParticle(itemPosCenter, new Color(106,0,255));
 
         assert MinecraftClient.getInstance().player != null;
+
         MinecraftClient.getInstance().player.playSound(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, volume, 1);
 
-        if(!PersistentOutlineRenderer.getInstance().contains(itemPos))
-            PersistentOutlineRenderer.getInstance().addPos(itemPos);
+        if(settings.spiralEnabled) {
+            ParticleUtil.CreateSpiralParticle(itemPosCenter, new Color((int) settings.itemRed, (int) settings.itemGreen, (int) settings.itemBlue), (int) settings.particleCount);
+        }
+        if(settings.blockHighlightEnabled) {
+            if (!PersistentOutlineRenderer.getInstance().contains(itemPos))
+                PersistentOutlineRenderer.getInstance().addPos(itemPos);
+        }
     }
 }
