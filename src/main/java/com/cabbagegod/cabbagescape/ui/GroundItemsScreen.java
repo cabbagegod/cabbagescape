@@ -34,7 +34,7 @@ import java.util.stream.Stream;
 public class GroundItemsScreen extends GameOptionsScreen {
     private static Option[] OPTIONS;
     private ButtonListWidget buttonList;
-    private Settings settings;
+    private final Settings settings;
     private TextFieldWidget groundItemsListTextField;
     private TextFieldWidget containsKeysTextField;
 

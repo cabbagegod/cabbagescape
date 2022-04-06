@@ -4,6 +4,7 @@ import com.cabbagegod.cabbagescape.client.blockoutline.BlockOutlineManager;
 import com.cabbagegod.cabbagescape.client.blockoutline.PersistentOutlineRenderer;
 import com.cabbagegod.cabbagescape.client.blockoutline.Vector3f;
 import com.cabbagegod.cabbagescape.client.grounditems.GroundItemsManager;
+import com.cabbagegod.cabbagescape.client.potiontimers.PotionTimerManager;
 import com.cabbagegod.cabbagescape.commands.Commands;
 import com.cabbagegod.cabbagescape.data.DataHandler;
 import com.cabbagegod.cabbagescape.data.Settings;
@@ -53,6 +54,8 @@ public class CabbageScapeClient implements ClientModInitializer {
         setupEvents();
         EventRegisterer.register();
         GroundItemsManager.register();
+
+        PotionTimerManager potionTimerManager = PotionTimerManager.getInstance();
 
         BlockOutlineManager.getInstance().add(PersistentOutlineRenderer.getInstance());
     }
