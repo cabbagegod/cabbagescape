@@ -8,9 +8,10 @@
 * Build Mode Toggle keybinding
 * Gound Items (/grounditems)
 * Clue Helper
+* *Beta* Potion Timers
+* Custom settings menu (find it in the [Esc] menu!)
 
 Planned:
-* Potion Timers
 * HP Notifier
 * Better Custom UI
 * Expansion of ground items functionality
