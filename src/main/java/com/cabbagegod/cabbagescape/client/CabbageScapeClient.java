@@ -2,39 +2,30 @@ package com.cabbagegod.cabbagescape.client;
 
 import com.cabbagegod.cabbagescape.client.blockoutline.BlockOutlineManager;
 import com.cabbagegod.cabbagescape.client.blockoutline.PersistentOutlineRenderer;
-import com.cabbagegod.cabbagescape.client.blockoutline.Vector3f;
 import com.cabbagegod.cabbagescape.client.grounditems.GroundItemsManager;
 import com.cabbagegod.cabbagescape.client.potiontimers.PotionTimerManager;
 import com.cabbagegod.cabbagescape.commands.Commands;
 import com.cabbagegod.cabbagescape.data.DataHandler;
 import com.cabbagegod.cabbagescape.data.Settings;
+import com.cabbagegod.cabbagescape.notifications.NotificationManager;
 import com.cabbagegod.cabbagescape.ui.UpdateScreen;
-import com.cabbagegod.cabbagescape.util.ParticleUtil;
 import com.google.gson.Gson;
+import jdk.jshell.spi.ExecutionControl;
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.text.LiteralText;
 import org.lwjgl.glfw.GLFW;
-
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class CabbageScapeClient implements ClientModInitializer {
     public static String settingsDir = "settings";
     public static String version = "pre-a1.1.1+1.18.2";
     public static Settings settings;
+
+    public static NotificationManager notificationManager;
 
     //Keybinds
     private static KeyBinding homeKey;
@@ -49,6 +40,8 @@ public class CabbageScapeClient implements ClientModInitializer {
 
         loadSettings();
         VersionChecker.Verify();
+
+        notificationManager = new NotificationManager(settings.notificationSettings);
 
         Commands.register();
         setupEvents();
@@ -81,23 +74,12 @@ public class CabbageScapeClient implements ClientModInitializer {
         DataHandler.WriteStringToFile(settingsJson, settingsDir);
     }
 
-    //Debug settings
-    BlockPos[] positions = new BlockPos[4];
-    Color[] colors = {new Color(6, 145, 180), new Color(77, 127, 69), new Color(194, 182, 70), new Color(172, 55, 125)};
-
     //These are all the events that the mod uses
     //In the future these should probably get moved into their own classes
     private void setupEvents(){
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if(client.world != null) {
                 checkKeyPress(client);
-
-                for (int i = 0; i < positions.length; i++) {
-                    if(positions[i] != null){
-                        BlockPos pos = positions[i];
-                        ParticleUtil.CreateSpiralParticle(new Vector3f(pos.getX() + .5f, pos.getY(), pos.getZ() + .5f), colors[i], (int) settings.groundItemSettings.particleCount);
-                    }
-                }
             }
         });
 
@@ -120,16 +102,7 @@ public class CabbageScapeClient implements ClientModInitializer {
             client.player.playSound(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
         }
         if(debugKey.wasPressed()){
-            BlockPos pos = client.player.getBlockPos();
-
-            for (int i = 0; i < positions.length; i++) {
-                if(positions[i] == null){
-                    positions[i] = pos;
-                    return;
-                }
-            }
-
-            positions = new BlockPos[4];
+            //
         }
     }
 }

@@ -64,8 +64,9 @@ public class GroundItemsScreen extends GameOptionsScreen {
         float blue = (float) settings.groundItemSettings.itemBlue;
 
         RenderSystem.setShaderColor(red / 255, green / 255, blue / 255, 1.0F);
-        Identifier test = new Identifier("minecraft", "textures/custom/colors/white.png");
-        RenderSystem.setShaderTexture(0, test);
+        Identifier colorPickerIcon = new Identifier("minecraft", "textures/custom/colors/white.png");
+        //Identifier colorPickerIcon = new Identifier("minecraft", "textures/gui/book.png");
+        RenderSystem.setShaderTexture(0, colorPickerIcon);
 
         //The color picker texture
         int x = width / 2 + 132 + 32;
@@ -152,6 +153,6 @@ public class GroundItemsScreen extends GameOptionsScreen {
             this.client.setScreen(this.parent);
         }));
 
-        OPTIONS = new Option[]{spiralEnabled, redOption, highlightEnabled, greenOption, particleOption ,blueOption};
+        OPTIONS = new Option[]{spiralEnabled, redOption, highlightEnabled, greenOption, particleOption, blueOption};
     }
 }
