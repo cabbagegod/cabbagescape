@@ -1,10 +1,8 @@
-package com.cabbagegod.cabbagescape.blockoutline;
+package com.cabbagegod.cabbagescape.client.blockoutline;
 
+import com.cabbagegod.cabbagescape.client.CabbageScapeClient;
+import com.cabbagegod.cabbagescape.data.GroundItemSettings;
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.ShapeContext;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.Tessellator;
@@ -13,8 +11,6 @@ import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.util.math.Vector3d;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.Util;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
@@ -72,14 +68,15 @@ public class BasicOutlineRenderer implements IOverlayRenderer {
         RenderSystem.disableCull();
         RenderSystem.depthMask(false);
 
+        GroundItemSettings settings = CabbageScapeClient.settings.groundItemSettings;
 
         // Allow glass and other translucent/transparent objects to render properly
-        Color fillColor = new Color(19,23,158, 0);
+        Color fillColor = new Color((int) settings.itemRed,(int) settings.itemGreen,(int) settings.itemBlue, 0);
         if (fillColor.getAlpha() > 0) {
             drawOutlineBoxes(tessellator, matrices, buffer, camDif, fillColor, outline);
         }
 
-        Color lineColor = new Color(255, 0, 0, 255);
+        Color lineColor = new Color((int) settings.itemRed,(int) settings.itemGreen,(int) settings.itemBlue, 255);
         if (lineColor.getAlpha() > 0) {
             drawOutlineLines(tessellator, matrices, buffer, camDif, lineColor, outline);
         }

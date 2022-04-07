@@ -4,6 +4,8 @@
   "package": "com.cabbagegod.cabbagescape.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "GameMenuMixin",
+    "InGameHudMixin",
     "WorldRendererMixin"
   ],
   "client": [

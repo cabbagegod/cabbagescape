@@ -1,13 +1,10 @@
-package com.cabbagegod.cabbagescape.blockoutline;
+package com.cabbagegod.cabbagescape.client.blockoutline;
 
-import net.minecraft.block.BlockState;
+import com.cabbagegod.cabbagescape.client.CabbageScapeClient;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.Camera;
-import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.util.math.Vector3d;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
 import java.util.ArrayList;
@@ -33,6 +30,8 @@ public class BlockOutlineManager {
     }
 
     public void render(MatrixStack matrices, Camera camera) {
+        if(!CabbageScapeClient.settings.groundItemSettings.blockHighlightEnabled) return;
+
         Vec3d vec = camera.getPos();
         Vector3d cam = new Vector3d(vec.getX(), vec.getY(), vec.getZ());
         for (IRenderable render : renderers) {

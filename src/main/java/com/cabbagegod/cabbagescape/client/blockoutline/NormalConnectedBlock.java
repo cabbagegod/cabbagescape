@@ -1,4 +1,4 @@
-package com.cabbagegod.cabbagescape.blockoutline;
+package com.cabbagegod.cabbagescape.client.blockoutline;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;

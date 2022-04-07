@@ -4,5 +4,7 @@
   "key.cabbagescape.buildmode_key" : "Buildmode Toggle",
   "key.cabbagescape.home_key" : "Home TP",
   "key.cabbagescape.debug_key" : "Debug",
-  "cabbagescape.clueHint": "Clue Step"
+  "cabbagescape.clueHint": "Clue Step",
+  "options.spiralenabled" : "Spiral:",
+  "options.highlightenabled" : "Block Highlight:"
 }
