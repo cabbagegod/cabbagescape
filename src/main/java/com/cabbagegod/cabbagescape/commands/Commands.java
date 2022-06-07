@@ -45,6 +45,7 @@ public class Commands {
                                     float volume = FloatArgumentType.getFloat(context, "num");
 
                                     CabbageScapeClient.settings.groundItemSettings.volume = volume;
+                                    CabbageScapeClient.saveSettings();
 
                                     return 1;
                                 })))
