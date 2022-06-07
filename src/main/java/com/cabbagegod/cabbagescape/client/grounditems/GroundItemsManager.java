@@ -70,6 +70,8 @@ public class GroundItemsManager {
 
     //This disaster logic is used to find/handle ground items
     private static void CheckArmorStands(MinecraftClient client){
+        boolean playSound = true;
+
         for (Entity entity: armorStands) {
             for (ItemStack itemStack : entity.getArmorItems()){
                 if(itemStack == null || itemStack.isEmpty() || itemStack.getItem() == Items.AIR)
@@ -80,9 +82,9 @@ public class GroundItemsManager {
 
                 //If the user's list of tags contains the name of the item that the armor stand is holding
                 if(settings.groundItemSettings.searchTags.contains(Formatting.strip(itemStack.getName().getString().toLowerCase()))){
-                    DisplayGroundItem(itemPos, settings.groundItemSettings.volume, false);
+                    DisplayGroundItem(itemPos, settings.groundItemSettings.volume, playSound);
+                    playSound = false;
                 } else {
-                    boolean playSound = true;
                     for(String tag : settings.groundItemSettings.containsTags){
                         if(Objects.requireNonNull(Formatting.strip(itemStack.getName().getString().toLowerCase())).contains(tag)){
                             DisplayGroundItem(itemPos, settings.groundItemSettings.volume, playSound);
