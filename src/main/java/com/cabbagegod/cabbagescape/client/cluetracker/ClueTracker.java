@@ -85,6 +85,10 @@ public class ClueTracker {
                         //Blame bandit for this
                         for(ItemLore lore : itemLores){
                             for(ItemExtra extra : lore.getExtra()){
+                                //Checks if there is no clue id, like in the test server (thanks zombie :P)
+                                if(extra.getExtra() == null)
+                                    break;
+
                                 for(ItemExtra__1 extra2 : extra.getExtra()) {
                                     try {
                                         clueId = Integer.parseInt(extra2.getText().replaceAll("[\\D]", ""));

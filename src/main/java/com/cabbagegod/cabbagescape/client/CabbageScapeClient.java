@@ -6,23 +6,41 @@ import com.cabbagegod.cabbagescape.client.grounditems.GroundItemsManager;
 import com.cabbagegod.cabbagescape.client.potiontimers.PotionTimerManager;
 import com.cabbagegod.cabbagescape.commands.Commands;
 import com.cabbagegod.cabbagescape.data.DataHandler;
+import com.cabbagegod.cabbagescape.data.DelayedScreenshot;
 import com.cabbagegod.cabbagescape.data.Settings;
 import com.cabbagegod.cabbagescape.notifications.NotificationManager;
 import com.cabbagegod.cabbagescape.ui.UpdateScreen;
+import com.cabbagegod.cabbagescape.util.FileUtil;
+import com.cabbagegod.cabbagescape.util.ScreenshotUtil;
+import com.cabbagegod.cabbagescape.util.ThreadingUtil;
 import com.google.gson.Gson;
 import jdk.jshell.spi.ExecutionControl;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gl.Framebuffer;
+import net.minecraft.client.gl.SimpleFramebuffer;
 import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.texture.NativeImage;
+import net.minecraft.client.util.ScreenshotRecorder;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.LiteralText;
 import org.lwjgl.glfw.GLFW;
 
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+
 public class CabbageScapeClient implements ClientModInitializer {
     public static String settingsDir = "settings";
-    public static String version = "pre-a1.1.1+1.18.2";
+    public static String version = "a1.3+1.18.2";
     public static Settings settings;
 
     public static NotificationManager notificationManager;
@@ -42,6 +60,8 @@ public class CabbageScapeClient implements ClientModInitializer {
         VersionChecker.Verify();
 
         notificationManager = new NotificationManager(settings.notificationSettings);
+
+
 
         Commands.register();
         setupEvents();
@@ -78,6 +98,8 @@ public class CabbageScapeClient implements ClientModInitializer {
     //In the future these should probably get moved into their own classes
     private void setupEvents(){
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
+            delayedScreenshotQueue();
+
             if(client.world != null) {
                 checkKeyPress(client);
             }
@@ -102,7 +124,35 @@ public class CabbageScapeClient implements ClientModInitializer {
             client.player.playSound(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
         }
         if(debugKey.wasPressed()){
-            //
+            NativeImage image = ScreenshotRecorder.takeScreenshot(client.getFramebuffer());
+            try {
+                DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH.mm.ss");;
+                String currentDate = dateFormat.format(LocalDateTime.now());
+
+                String screenshotDir = FileUtil.directoryPath + "screenshots/";
+                FileUtil.CreateNewDirecotryIfNotExists(screenshotDir);
+                image.writeTo(new File(screenshotDir + currentDate + ".png"));
+            } catch (IOException exception) {
+                exception.printStackTrace();
+            }
+        }
+    }
+
+    //Allows you to take a screenshot from another thread and or with a delay
+    public static void takeScreenshotAfterDelayOnMainThread(int msDelay){
+        screenshotQueue.add(new DelayedScreenshot(msDelay, System.currentTimeMillis()));
+    }
+
+    static List<DelayedScreenshot> screenshotQueue = new ArrayList<>();
+    private void delayedScreenshotQueue(){
+        for (int i = screenshotQueue.size() - 1; i >= 0; i--) {
+            DelayedScreenshot currentDelay = screenshotQueue.get(i);
+
+            if(currentDelay.startTime + currentDelay.msDelay < System.currentTimeMillis()){
+                ScreenshotUtil.saveScreenshot();
+
+                screenshotQueue.remove(i);
+            }
         }
     }
 }

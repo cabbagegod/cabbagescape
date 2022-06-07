@@ -1,17 +1,22 @@
 package com.cabbagegod.cabbagescape.data;
 
-import org.apache.commons.lang3.StringUtils;
+import com.cabbagegod.cabbagescape.util.FileUtil;
 
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Scanner;
 
 public class DataHandler {
     public static void WriteStringToFile(String data, String fileName){
+        FileUtil.CreateDefaultDirectoryIfNotExists();
+        String directoryPath = FileUtil.directoryPath;
+
         try {
-            FileWriter myWriter = new FileWriter(fileName + ".txt");
+            FileWriter myWriter = new FileWriter(directoryPath + fileName + ".txt");
             myWriter.write(data);
             myWriter.close();
             System.out.println("Successfully wrote to the file.");
@@ -22,18 +27,14 @@ public class DataHandler {
     }
 
     public static String ReadStringFromFile(String fileName){
+        FileUtil.CreateDefaultDirectoryIfNotExists();
+        String directoryPath = FileUtil.directoryPath;
+
         String text = "";
         try {
-            File myObj = new File(fileName + ".txt");
-            Scanner myReader = new Scanner(myObj);
-            while (myReader.hasNextLine()) {
-                String data = myReader.nextLine();
-                text += data;
-            }
-            myReader.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
+            text = Files.readString(Paths.get(directoryPath + fileName + ".txt"));
+        } catch (IOException exception) {
+            exception.printStackTrace();
         }
         return text;
     }

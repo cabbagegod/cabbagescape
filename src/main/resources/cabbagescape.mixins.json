@@ -6,7 +6,8 @@
   "mixins": [
     "GameMenuMixin",
     "InGameHudMixin",
-    "WorldRendererMixin"
+    "WorldRendererMixin",
+    "ChatHudMixin"
   ],
   "client": [
     "CabbageMixin"

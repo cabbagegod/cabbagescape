@@ -70,7 +70,7 @@ public class GroundItemsScreen extends GameOptionsScreen {
 
         //The color picker texture
         int x = width / 2 + 132 + 32;
-        int y = 40;
+        int y = 56;
         drawTexture(matrices, x,y,0,0,32,32);
 
         drawCenteredText(matrices, this.textRenderer, this.title, this.width / 2, 5, 16777215);

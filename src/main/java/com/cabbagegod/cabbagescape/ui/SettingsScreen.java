@@ -7,6 +7,7 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.loader.language.LanguageAdapter;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.Element;
+import net.minecraft.client.gui.screen.GameMenuScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.option.OptionsScreen;
 import net.minecraft.client.gui.widget.ButtonListWidget;
@@ -37,6 +38,10 @@ public class SettingsScreen extends Screen {
             //this.client.setScreen(new OptionsScreen(this, this.client.options));
             MinecraftClient.getInstance().setScreen(new GroundItemsScreen(this, this.client.options, CabbageScapeClient.settings));
         }));
+        addDrawableChild(new ButtonWidget(this.width / 2 - 102, this.height / 4 + 96 + 16, 204, 20, new LiteralText("Done"), button -> {
+            MinecraftClient.getInstance().setScreen(new GameMenuScreen(true));
+        }));
+
 
         super.render(matrices, mouseX, mouseY, delta);
     }
