@@ -80,11 +80,13 @@ public class GroundItemsManager {
 
                 //If the user's list of tags contains the name of the item that the armor stand is holding
                 if(settings.groundItemSettings.searchTags.contains(Formatting.strip(itemStack.getName().getString().toLowerCase()))){
-                    DisplayGroundItem(itemPos, settings.groundItemSettings.volume);
+                    DisplayGroundItem(itemPos, settings.groundItemSettings.volume, false);
                 } else {
+                    boolean playSound = true;
                     for(String tag : settings.groundItemSettings.containsTags){
                         if(Objects.requireNonNull(Formatting.strip(itemStack.getName().getString().toLowerCase())).contains(tag)){
-                            DisplayGroundItem(itemPos, settings.groundItemSettings.volume);
+                            DisplayGroundItem(itemPos, settings.groundItemSettings.volume, playSound);
+                            playSound = false;
                             break;
                         }
                     }
@@ -93,7 +95,7 @@ public class GroundItemsManager {
         }
     }
 
-    private static void DisplayGroundItem(BlockPos itemPos, float volume){
+    private static void DisplayGroundItem(BlockPos itemPos, float volume, boolean playSound){
         GroundItemSettings settings = CabbageScapeClient.settings.groundItemSettings;
 
         //Get the center of the block that the item is on
@@ -101,7 +103,8 @@ public class GroundItemsManager {
 
         assert MinecraftClient.getInstance().player != null;
 
-        MinecraftClient.getInstance().player.playSound(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, volume, 1);
+        if(playSound)
+            MinecraftClient.getInstance().player.playSound(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, volume, 1);
 
         if(settings.spiralEnabled) {
             ParticleUtil.CreateSpiralParticle(itemPosCenter, new Color((int) settings.itemRed, (int) settings.itemGreen, (int) settings.itemBlue), (int) settings.particleCount);
