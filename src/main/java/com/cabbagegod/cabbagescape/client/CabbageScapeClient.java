@@ -40,7 +40,7 @@ import java.util.*;
 
 public class CabbageScapeClient implements ClientModInitializer {
     public static String settingsDir = "settings";
-    public static String version = "a1.3.1+1.18.2";
+    public static String version = "a1.3.2+1.18.2";
     public static Settings settings;
 
     public static NotificationManager notificationManager;

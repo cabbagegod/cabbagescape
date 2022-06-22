@@ -57,12 +57,9 @@ public class PotionTimerManager {
             if(lastSlot == slot){
                 //Check if the slot is the same but the name has changed
                 if(!lastItemName.equals(itemName)){
-                    //Item is potion
-                    if(Objects.requireNonNull(lastItemName).toLowerCase().contains("potion")){
-                        Potion potion = parsePotionName(lastItemName);
-                        if(potion != null){
-                            onUsePotion(potion);
-                        }
+                    Potion potion = parsePotionName(lastItemName);
+                    if(potion != null){
+                        onUsePotion(potion);
                     }
                 }
             }
@@ -71,8 +68,12 @@ public class PotionTimerManager {
             lastItemName = itemName;
         });
 
-        //Track whenthe player has right clicked a potion in their hand
+        //Track when the player has right clicked a potion in their hand
         UseItemCallback.EVENT.register(((player, world, hand) -> {
+            //Check to make sure the player is the local player and not somebody nearby
+            if(!player.isMainPlayer())
+                return TypedActionResult.pass(ItemStack.EMPTY);
+
             ItemStack handItem = player.getStackInHand(Hand.MAIN_HAND);
 
             if(handItem == null)
@@ -80,7 +81,7 @@ public class PotionTimerManager {
 
             String itemName = Formatting.strip(handItem.getName().getString().toLowerCase());
 
-            if(Objects.requireNonNull(itemName).contains("potion")){
+            if(Objects.nonNull(itemName)){
                 Potion potion = parsePotionName(itemName);
                 if(potion != null){
                     onUsePotion(potion);
@@ -135,15 +136,14 @@ public class PotionTimerManager {
 
     List<Potion> getPotions(){
         List<Potion> potions = new ArrayList<Potion>();
-        potions.add(new Potion(20, "test potion"));
-        potions.add(new Potion(6 * 60, "antifire potion", "textures/custom/diamond_shovel/herblore_or_potion/antifire_potion/antifire_potion_3.png"));
-        potions.add(new Potion(12 * 60, "extended antifire"));
-        potions.add(new Potion(3 * 60, "super antifire potion"));
-        potions.add(new Potion(6 * 60, "extended super antifire"));
-        potions.add(new Potion(3 * 60, "agility potion"));
-        potions.add(new Potion(4 * 60, "magic potion"));
-        potions.add(new Potion(3 * 60, "hunter potion"));
-        potions.add(new Potion(3 * 60, "fishing potion"));
+        potions.add(new Potion(3 * 60, "super antifire potion", "textures/custom/diamond_shovel/herblore_or_potion/super_antifire_potion/super_antifire_potion_4.png"));
+        potions.add(new Potion(6 * 60, "antifire potion", "textures/custom/diamond_shovel/herblore_or_potion/antifire_potion/antifire_potion_4.png"));
+        potions.add(new Potion(12 * 60, "extended antifire", "textures/custom/diamond_shovel/herblore_or_potion/extended_antifire/extended_antifire_4.png"));
+        potions.add(new Potion(6 * 60, "extended super antifire", "textures/custom/diamond_shovel/herblore_or_potion/extended_super_antifire/extended_super_antifire_4.png"));
+        potions.add(new Potion(3 * 60, "agility potion", "textures/custom/diamond_shovel/herblore_or_potion/agility_potion/agility_potion_4.png"));
+        potions.add(new Potion(4 * 60, "magic potion", "textures/custom/diamond_shovel/herblore_or_potion/magic_potion/magic_potion_4.png"));
+        potions.add(new Potion(3 * 60, "hunter potion", "textures/custom/diamond_shovel/herblore_or_potion/hunter_potion/hunter_potion_4.png"));
+        potions.add(new Potion(3 * 60, "fishing potion", "textures/custom/diamond_shovel/herblore_or_potion/fishing_potion/fishing_potion_4.png"));
 
         return potions;
     }
