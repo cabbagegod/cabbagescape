@@ -57,12 +57,9 @@ public class PotionTimerManager {
             if(lastSlot == slot){
                 //Check if the slot is the same but the name has changed
                 if(!lastItemName.equals(itemName)){
-                    //Item is potion
-                    if(Objects.requireNonNull(lastItemName).toLowerCase().contains("potion")){
-                        Potion potion = parsePotionName(lastItemName);
-                        if(potion != null){
-                            onUsePotion(potion);
-                        }
+                    Potion potion = parsePotionName(lastItemName);
+                    if(potion != null){
+                        onUsePotion(potion);
                     }
                 }
             }
@@ -71,7 +68,7 @@ public class PotionTimerManager {
             lastItemName = itemName;
         });
 
-        //Track whenthe player has right clicked a potion in their hand
+        //Track when the player has right clicked a potion in their hand
         UseItemCallback.EVENT.register(((player, world, hand) -> {
             //Check to make sure the player is the local player and not somebody nearby
             if(!player.isMainPlayer())
@@ -84,7 +81,7 @@ public class PotionTimerManager {
 
             String itemName = Formatting.strip(handItem.getName().getString().toLowerCase());
 
-            if(Objects.requireNonNull(itemName).contains("potion")){
+            if(Objects.nonNull(itemName)){
                 Potion potion = parsePotionName(itemName);
                 if(potion != null){
                     onUsePotion(potion);
