@@ -73,6 +73,10 @@ public class PotionTimerManager {
 
         //Track whenthe player has right clicked a potion in their hand
         UseItemCallback.EVENT.register(((player, world, hand) -> {
+            //Check to make sure the player is the local player and not somebody nearby
+            if(!player.isMainPlayer())
+                return TypedActionResult.pass(ItemStack.EMPTY);
+
             ItemStack handItem = player.getStackInHand(Hand.MAIN_HAND);
 
             if(handItem == null)
