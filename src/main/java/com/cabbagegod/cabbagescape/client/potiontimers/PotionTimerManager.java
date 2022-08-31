@@ -109,6 +109,7 @@ public class PotionTimerManager {
 
             PotionInstance potionInst = new PotionInstance(lastUsed, potion.getLength(), potion.getLiteralName(), potion.getResourcePath());
 
+            //Start new thread for potion
             potionThreads.put(potionInst, new Thread(() -> {
                 ThreadingUtil.wait((potion.getLength() - 15) * 1000);
                 //Check if the thread was interrupted, this means the player has refreshed their potion

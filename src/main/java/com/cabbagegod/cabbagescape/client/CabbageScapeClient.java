@@ -45,23 +45,17 @@ public class CabbageScapeClient implements ClientModInitializer {
 
     public static NotificationManager notificationManager;
 
-    //Keybinds
-    private static KeyBinding homeKey;
-    private static KeyBinding buildModeKey;
+    //Keybinds - F to pay respects
     private static KeyBinding debugKey;
 
     @Override
     public void onInitializeClient() {
-        homeKey = KeybindHandler.createKeybind("home_key", "category.cabbagescape", GLFW.GLFW_KEY_H);
-        buildModeKey = KeybindHandler.createKeybind("buildmode_key", "category.cabbagescape", GLFW.GLFW_KEY_B);
         debugKey = KeybindHandler.createKeybind("debug_key", "category.cabbagescape", 0);
 
         loadSettings();
         VersionChecker.Verify();
 
         notificationManager = new NotificationManager(settings.notificationSettings);
-
-
 
         Commands.register();
         setupEvents();
@@ -115,14 +109,6 @@ public class CabbageScapeClient implements ClientModInitializer {
     private void checkKeyPress(MinecraftClient client){
         assert client.player != null;
 
-        if (homeKey.wasPressed()) {
-            client.player.sendChatMessage("/home");
-            client.player.playSound(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
-        }
-        if (buildModeKey.wasPressed()) {
-            client.player.sendChatMessage("/con buildmode");
-            client.player.playSound(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
-        }
         if(debugKey.wasPressed()){
             NativeImage image = ScreenshotRecorder.takeScreenshot(client.getFramebuffer());
             try {
