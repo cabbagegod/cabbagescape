@@ -1,5 +1,6 @@
 package com.cabbagegod.cabbagescape.client;
 
+import com.cabbagegod.cabbagescape.client.barrows.BarrowsHelper;
 import com.cabbagegod.cabbagescape.client.blockoutline.BlockOutlineManager;
 import com.cabbagegod.cabbagescape.client.blockoutline.PersistentOutlineRenderer;
 import com.cabbagegod.cabbagescape.client.grounditems.GroundItemsManager;
@@ -16,6 +17,7 @@ import com.cabbagegod.cabbagescape.util.ThreadingUtil;
 import com.google.gson.Gson;
 import jdk.jshell.spi.ExecutionControl;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.minecraft.client.MinecraftClient;
@@ -24,6 +26,9 @@ import net.minecraft.client.gl.SimpleFramebuffer;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.texture.NativeImage;
 import net.minecraft.client.util.ScreenshotRecorder;
+import net.minecraft.client.world.ClientWorld;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.LiteralText;
 import org.lwjgl.glfw.GLFW;
@@ -40,7 +45,7 @@ import java.util.*;
 
 public class CabbageScapeClient implements ClientModInitializer {
     public static String settingsDir = "settings";
-    public static String version = "a1.3.2+1.18.2";
+    public static String version = "a1.4+1.18.2";
     public static Settings settings;
 
     public static NotificationManager notificationManager;
@@ -61,8 +66,9 @@ public class CabbageScapeClient implements ClientModInitializer {
         setupEvents();
         EventRegisterer.register();
         GroundItemsManager.register();
+        BarrowsHelper.register();
 
-        PotionTimerManager potionTimerManager = PotionTimerManager.getInstance();
+        //PotionTimerManager potionTimerManager = PotionTimerManager.getInstance();
 
         BlockOutlineManager.getInstance().add(PersistentOutlineRenderer.getInstance());
     }

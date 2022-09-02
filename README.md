@@ -4,10 +4,9 @@
 
 ## Features
 
-* Home teleport keybinding
-* Build Mode Toggle keybinding
 * Gound Items (/grounditems)
 * Clue Helper
+* Barrows helper
 * *Beta* Potion Timers
 * Custom settings menu (find it in the [Esc] menu!)
 
@@ -17,6 +16,7 @@ Planned:
 * Expansion of ground items functionality
 * Built in mini-map
 * Advanced clue scroll guide & tracker
+* Advanced armor models
 * *TBD*
 
 ## Setup

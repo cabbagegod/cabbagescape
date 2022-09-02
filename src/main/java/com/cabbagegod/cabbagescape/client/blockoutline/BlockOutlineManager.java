@@ -30,8 +30,6 @@ public class BlockOutlineManager {
     }
 
     public void render(MatrixStack matrices, Camera camera) {
-        if(!CabbageScapeClient.settings.groundItemSettings.blockHighlightEnabled) return;
-
         Vec3d vec = camera.getPos();
         Vector3d cam = new Vector3d(vec.getX(), vec.getY(), vec.getZ());
         for (IRenderable render : renderers) {

@@ -71,4 +71,8 @@ public class PersistentOutlineRenderer implements IRenderable{
         removeIfExistsElseAdd(((BlockHitResult)result).getBlockPos());
         return true;
     }
+
+    public int getSize(){
+        return persistentBlocks.size();
+    }
 }

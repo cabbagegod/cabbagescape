@@ -4,10 +4,12 @@
   "package": "com.cabbagegod.cabbagescape.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "ChatHudMixin",
+    "DoorBlockMixin",
     "GameMenuMixin",
     "InGameHudMixin",
-    "WorldRendererMixin",
-    "ChatHudMixin"
+    "PlayerEntityRendererMixin",
+    "WorldRendererMixin"
   ],
   "client": [
     "CabbageMixin"
