@@ -139,6 +139,11 @@ public class GroundItemsScreen extends GameOptionsScreen {
         this.containsKeysTextField.setMaxLength(Integer.MAX_VALUE);
         this.containsKeysTextField.setText(parsedTags.toString());
         this.containsKeysTextField.setChangedListener(parsedKeys -> {
+            if(parsedKeys.isEmpty()){
+                settings.containsTags = new ArrayList<String>();
+                return;
+            }
+
             String[] keys = parsedKeys.split(",");
             settings.containsTags = new ArrayList<String>(Arrays.asList(keys));
         });
