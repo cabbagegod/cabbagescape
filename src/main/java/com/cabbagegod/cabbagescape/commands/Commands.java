@@ -1,6 +1,8 @@
 package com.cabbagegod.cabbagescape.commands;
 
 import com.cabbagegod.cabbagescape.client.CabbageScapeClient;
+import com.cabbagegod.cabbagescape.client.blockoutline.PersistentOutlineRenderer;
+import com.cabbagegod.cabbagescape.client.grounditems.GroundItemsManager;
 import com.mojang.brigadier.arguments.FloatArgumentType;
 import net.fabricmc.fabric.api.client.command.v1.ClientCommandManager;
 import net.minecraft.client.MinecraftClient;
@@ -49,6 +51,12 @@ public class Commands {
 
                                     return 1;
                                 })))
+                .then(ClientCommandManager.literal("reload")
+                                .executes(context -> {
+                                    PersistentOutlineRenderer.getInstance().clear();
+
+                                    return 1;
+                                }))
                 .then(ClientCommandManager.literal("contains")
                     .then(ClientCommandManager.literal("add")
                         .then(ClientCommandManager.argument("item", ClientMessageArgumentType.message())
