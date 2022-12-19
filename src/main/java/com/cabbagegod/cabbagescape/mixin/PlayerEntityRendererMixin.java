@@ -1,6 +1,5 @@
 package com.cabbagegod.cabbagescape.mixin;
 
-import net.minecraft.block.DoorBlock;
 import net.minecraft.client.render.entity.PlayerEntityRenderer;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
