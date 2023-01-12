@@ -3,9 +3,7 @@ package com.cabbagegod.cabbagescape.client.barrows;
 import com.cabbagegod.cabbagescape.client.blockoutline.PersistentOutlineRenderer;
 import com.cabbagegod.cabbagescape.events.DoorUseCallback;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.minecraft.block.Material;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
@@ -13,7 +11,6 @@ import net.minecraft.entity.decoration.ArmorStandEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
 import net.minecraft.screen.ScreenHandler;
-import net.minecraft.text.LiteralText;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 

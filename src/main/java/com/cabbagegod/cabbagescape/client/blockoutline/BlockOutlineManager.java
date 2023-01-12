@@ -1,6 +1,5 @@
 package com.cabbagegod.cabbagescape.client.blockoutline;
 
-import com.cabbagegod.cabbagescape.client.CabbageScapeClient;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.util.math.MatrixStack;

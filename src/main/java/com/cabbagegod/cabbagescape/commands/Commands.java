@@ -2,7 +2,6 @@ package com.cabbagegod.cabbagescape.commands;
 
 import com.cabbagegod.cabbagescape.client.CabbageScapeClient;
 import com.cabbagegod.cabbagescape.client.blockoutline.PersistentOutlineRenderer;
-import com.cabbagegod.cabbagescape.client.grounditems.GroundItemsManager;
 import com.mojang.brigadier.arguments.FloatArgumentType;
 import net.fabricmc.fabric.api.client.command.v1.ClientCommandManager;
 import net.minecraft.client.MinecraftClient;

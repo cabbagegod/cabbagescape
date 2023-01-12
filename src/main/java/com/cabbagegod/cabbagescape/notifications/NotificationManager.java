@@ -1,12 +1,10 @@
 package com.cabbagegod.cabbagescape.notifications;
 
 import com.cabbagegod.cabbagescape.data.NotificationSettings;
-import com.cabbagegod.cabbagescape.mixin.InGameHudMixin;
 import com.cabbagegod.cabbagescape.util.ThreadingUtil;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.LiteralText;
 
 public class NotificationManager {
     public static boolean showFlash = false;

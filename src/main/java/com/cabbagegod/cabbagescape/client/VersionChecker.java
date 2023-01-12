@@ -1,19 +1,14 @@
 package com.cabbagegod.cabbagescape.client;
 
-import com.cabbagegod.cabbagescape.data.Settings;
 import com.cabbagegod.cabbagescape.github.Release;
-import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.ArrayList;
-import java.util.List;
 
 public class VersionChecker {
     private static boolean showUpdate = false;

@@ -1,18 +1,14 @@
 package com.cabbagegod.cabbagescape.mixin;
 
-import com.cabbagegod.cabbagescape.client.CabbageScapeClient;
 import com.cabbagegod.cabbagescape.client.potiontimers.PotionInstance;
 import com.cabbagegod.cabbagescape.client.potiontimers.PotionTimerManager;
-import com.cabbagegod.cabbagescape.data.NotificationSettings;
 import com.cabbagegod.cabbagescape.notifications.NotificationManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.datafixer.fix.OminousBannerBlockEntityRenameFix;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Mixin;

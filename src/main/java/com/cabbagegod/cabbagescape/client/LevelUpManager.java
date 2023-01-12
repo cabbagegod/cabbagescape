@@ -1,11 +1,6 @@
 package com.cabbagegod.cabbagescape.client;
 
-import com.cabbagegod.cabbagescape.data.DataHandler;
 import com.cabbagegod.cabbagescape.data.Skill;
-import com.cabbagegod.cabbagescape.util.ScreenshotUtil;
-import com.cabbagegod.cabbagescape.util.ThreadingUtil;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.text.LiteralText;
 
 import java.util.ArrayList;
 import java.util.List;

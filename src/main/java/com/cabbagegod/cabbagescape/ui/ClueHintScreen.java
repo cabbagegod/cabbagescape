@@ -1,6 +1,5 @@
 package com.cabbagegod.cabbagescape.ui;
 
-import com.cabbagegod.cabbagescape.client.VersionChecker;
 import com.cabbagegod.cabbagescape.client.cluetracker.ClueStep;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
