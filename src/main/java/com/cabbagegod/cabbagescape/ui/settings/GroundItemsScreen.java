@@ -1,4 +1,4 @@
-package com.cabbagegod.cabbagescape.ui;
+package com.cabbagegod.cabbagescape.ui.settings;
 
 import com.cabbagegod.cabbagescape.client.CabbageScapeClient;
 import com.cabbagegod.cabbagescape.data.GroundItemSettings;
@@ -29,10 +29,10 @@ public class GroundItemsScreen extends GameOptionsScreen {
     private TextFieldWidget groundItemsListTextField;
     private TextFieldWidget containsKeysTextField;
 
-    public GroundItemsScreen(Screen parent, GameOptions gameOptions, Settings settings) {
-        super(parent, gameOptions, new LiteralText("Ground Items Options"));
+    public GroundItemsScreen() {
+        super(null, null, new LiteralText("Ground Items Options"));
 
-        this.settings = settings;
+        this.settings = CabbageScapeClient.settings;
     }
 
     protected void init(){

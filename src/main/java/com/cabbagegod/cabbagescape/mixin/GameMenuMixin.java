@@ -1,6 +1,6 @@
 package com.cabbagegod.cabbagescape.mixin;
 
-import com.cabbagegod.cabbagescape.ui.SettingsScreen;
+import com.cabbagegod.cabbagescape.ui.settings.SettingsScreen;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.GameMenuScreen;
 import net.minecraft.client.gui.screen.Screen;
