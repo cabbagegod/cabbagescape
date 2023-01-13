@@ -100,17 +100,7 @@ public class CabbageScapeClient implements ClientModInitializer {
         assert client.player != null;
 
         if(debugKey.wasPressed()){
-            NativeImage image = ScreenshotRecorder.takeScreenshot(client.getFramebuffer());
-            try {
-                DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH.mm.ss");;
-                String currentDate = dateFormat.format(LocalDateTime.now());
-
-                String screenshotDir = FileUtil.directoryPath + "screenshots/";
-                FileUtil.CreateNewDirecotryIfNotExists(screenshotDir);
-                image.writeTo(new File(screenshotDir + currentDate + ".png"));
-            } catch (IOException exception) {
-                exception.printStackTrace();
-            }
+            //test something
         }
     }
 
