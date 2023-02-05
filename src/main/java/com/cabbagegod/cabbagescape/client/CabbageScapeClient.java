@@ -1,5 +1,6 @@
 package com.cabbagegod.cabbagescape.client;
 
+import com.cabbagegod.cabbagescape.Main;
 import com.cabbagegod.cabbagescape.client.barrows.BarrowsHelper;
 import com.cabbagegod.cabbagescape.client.blockoutline.BlockOutlineManager;
 import com.cabbagegod.cabbagescape.client.blockoutline.PersistentOutlineRenderer;
@@ -8,21 +9,28 @@ import com.cabbagegod.cabbagescape.commands.Commands;
 import com.cabbagegod.cabbagescape.data.DataHandler;
 import com.cabbagegod.cabbagescape.data.DelayedScreenshot;
 import com.cabbagegod.cabbagescape.data.Settings;
+import com.cabbagegod.cabbagescape.events.EventHandler;
 import com.cabbagegod.cabbagescape.notifications.NotificationManager;
 import com.cabbagegod.cabbagescape.ui.UpdateScreen;
 import com.cabbagegod.cabbagescape.util.FileUtil;
 import com.cabbagegod.cabbagescape.util.ScreenshotUtil;
 import com.google.gson.Gson;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
+import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.texture.NativeImage;
 import net.minecraft.client.util.ScreenshotRecorder;
+import org.reflections.Reflections;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -35,26 +43,39 @@ public class CabbageScapeClient implements ClientModInitializer {
     public static NotificationManager notificationManager;
 
     //Keybinds - F to pay respects
-    private static KeyBinding debugKey;
+    public static KeyBinding debugKey;
 
     @Override
     public void onInitializeClient() {
         debugKey = KeybindHandler.createKeybind("debug_key", "category.cabbagescape", 0);
 
         loadSettings();
-        VersionChecker.Verify();
 
         notificationManager = new NotificationManager(settings.notificationSettings);
 
-        Commands.register();
         setupEvents();
-        EventRegisterer.register();
-        GroundItemsManager.register();
-        BarrowsHelper.register();
-
-        //PotionTimerManager potionTimerManager = PotionTimerManager.getInstance();
 
         BlockOutlineManager.getInstance().add(PersistentOutlineRenderer.getInstance());
+
+        loadEventHandlers();
+    }
+
+    private void loadEventHandlers(){
+        //Load all event handlers
+        Reflections reflections = new Reflections("com.cabbagegod.cabbagescape");
+        Set<Class<? extends EventHandler>> classes = reflections.getSubTypesOf(EventHandler.class);
+        for (Class handler: classes) {
+            try {
+                Constructor<?> hConst = handler.getConstructor();
+
+                EventHandler eventHandler = (EventHandler) hConst.newInstance();
+
+                eventHandler.start();
+
+                Main.LOGGER.info("Started Event: " + eventHandler.getClass().getTypeName());
+            } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException ignored) {
+            }
+        }
     }
 
     //Loads json file as settings
@@ -83,25 +104,7 @@ public class CabbageScapeClient implements ClientModInitializer {
     private void setupEvents(){
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             delayedScreenshotQueue();
-
-            if(client.world != null) {
-                checkKeyPress(client);
-            }
         });
-
-        ClientPlayConnectionEvents.JOIN.register(((handler, sender, client) -> {
-            if(VersionChecker.shouldShowUpdate())
-                client.setScreen(new UpdateScreen());
-        }));
-    }
-
-    //Is called every client tick to see if a hotkey was pressed
-    private void checkKeyPress(MinecraftClient client){
-        assert client.player != null;
-
-        if(debugKey.wasPressed()){
-            //test something
-        }
     }
 
     //Allows you to take a screenshot from another thread and or with a delay

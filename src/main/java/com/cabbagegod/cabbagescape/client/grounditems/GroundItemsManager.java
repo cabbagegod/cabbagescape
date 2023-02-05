@@ -5,6 +5,7 @@ import com.cabbagegod.cabbagescape.client.blockoutline.PersistentOutlineRenderer
 import com.cabbagegod.cabbagescape.client.blockoutline.Vector3f;
 import com.cabbagegod.cabbagescape.data.GroundItemSettings;
 import com.cabbagegod.cabbagescape.data.Settings;
+import com.cabbagegod.cabbagescape.events.EventHandler;
 import com.cabbagegod.cabbagescape.util.ParticleUtil;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -23,15 +24,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class GroundItemsManager {
-    //Ground items
-    private static List<Entity> armorStands = new ArrayList<Entity>();
-
-    public static void register(){
+public class GroundItemsManager implements EventHandler {
+    @Override
+    public void start() {
         ClientEntityEvents.ENTITY_LOAD.register(GroundItemsManager::OnArmorStandLoad);
         ClientEntityEvents.ENTITY_UNLOAD.register(GroundItemsManager::OnArmorStandUnload);
         ClientTickEvents.END_CLIENT_TICK.register(GroundItemsManager::OnEndTick);
     }
+
+    //Ground items
+    private static List<Entity> armorStands = new ArrayList<Entity>();
 
     public static void RemoveArmorStand(Entity e){
         armorStands.remove(e);

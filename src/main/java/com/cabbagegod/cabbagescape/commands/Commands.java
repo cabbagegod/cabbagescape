@@ -2,15 +2,36 @@ package com.cabbagegod.cabbagescape.commands;
 
 import com.cabbagegod.cabbagescape.client.CabbageScapeClient;
 import com.cabbagegod.cabbagescape.client.blockoutline.PersistentOutlineRenderer;
+import com.cabbagegod.cabbagescape.events.EventHandler;
 import com.mojang.brigadier.arguments.FloatArgumentType;
 import net.fabricmc.fabric.api.client.command.v1.ClientCommandManager;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import org.apache.commons.lang3.StringUtils;
 
-public class Commands {
-    public static void register(){
+public class Commands implements EventHandler {
+    @Override
+    public void start() {
+        register();
+        ClientTickEvents.END_CLIENT_TICK.register(client -> {
+            if(client.world != null) {
+                checkKeyPress(client);
+            }
+        });
+    }
+
+    //Is called every client tick to see if a hotkey was pressed
+    private void checkKeyPress(MinecraftClient client){
+        assert client.player != null;
+
+        if(CabbageScapeClient.debugKey.wasPressed()){
+            //test something
+        }
+    }
+
+    private void register(){
         ClientCommandManager.DISPATCHER.register(ClientCommandManager.literal("grounditems")
                 .then(ClientCommandManager.literal("add")
                         .then(ClientCommandManager.argument("item", ClientMessageArgumentType.message())

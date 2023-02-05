@@ -2,9 +2,13 @@ package com.cabbagegod.cabbagescape.notifications;
 
 import com.cabbagegod.cabbagescape.data.NotificationSettings;
 import com.cabbagegod.cabbagescape.util.ThreadingUtil;
+import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.text.LiteralText;
 
 public class NotificationManager {
     public static boolean showFlash = false;
@@ -14,6 +18,7 @@ public class NotificationManager {
 
     public NotificationManager(NotificationSettings settings){
         this.settings = settings;
+        HudRenderCallback.EVENT.register(NotificationManager::onHudRender);
     }
 
     public void sendNotification(String text){
@@ -33,5 +38,15 @@ public class NotificationManager {
                 showFlash = false;
             }).start();
         }
+    }
+
+    public static void onHudRender(MatrixStack matrices, float t){
+        int width = MinecraftClient.getInstance().getWindow().getWidth();
+        int height = MinecraftClient.getInstance().getWindow().getHeight();
+
+        //The color picker texture
+        //Texture transparency for some reason is acting all funny :(
+        //drawTexture(matrices, 0, 0, 0, 0, this.scaledWidth - 150, this.scaledHeight - 150);
+        DrawableHelper.drawCenteredText(matrices, MinecraftClient.getInstance().textRenderer, new LiteralText(NotificationManager.currentNotif), width / 2, height / 2, -1);
     }
 }

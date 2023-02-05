@@ -1,5 +1,6 @@
 package com.cabbagegod.cabbagescape.mixin;
 
+import com.cabbagegod.cabbagescape.callbacks.ReceiveChatMessageCallback;
 import com.cabbagegod.cabbagescape.client.LevelUpManager;
 import net.minecraft.client.gui.hud.ChatHud;
 import net.minecraft.text.Text;
@@ -16,6 +17,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class ChatHudMixin {
     @Inject(at = @At("RETURN"), method = "addMessage(Lnet/minecraft/text/Text;)V")
     public void addMessage(Text message, CallbackInfo ci){
-        LevelUpManager.receiveMessage(message.getString());
+        ReceiveChatMessageCallback.EVENT.invoker().interact(message.getString());
     }
 }

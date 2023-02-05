@@ -2,11 +2,14 @@ package com.cabbagegod.cabbagescape.client.cluetracker;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.cabbagegod.cabbagescape.Main;
 import com.cabbagegod.cabbagescape.client.cluetracker.ClueStep.Difficulty;
 import com.cabbagegod.cabbagescape.data.itemdata.ItemDisplay;
 import com.cabbagegod.cabbagescape.data.itemdata.ItemExtra;
 import com.cabbagegod.cabbagescape.data.itemdata.ItemExtra__1;
 import com.cabbagegod.cabbagescape.data.itemdata.ItemLore;
+import com.cabbagegod.cabbagescape.events.EventHandler;
 import com.cabbagegod.cabbagescape.ui.ClueHintScreen;
 import com.google.gson.Gson;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
@@ -20,7 +23,7 @@ import net.minecraft.util.TypedActionResult;
 public class ClueTracker {
     static List<ClueStep> clueSteps = new ArrayList<ClueStep>();
 
-    public ClueTracker(){
+    public static void Setup(){
         if(clueSteps.size() != 0)
             return;
 
@@ -89,9 +92,7 @@ public class ClueTracker {
                                 for(ItemExtra__1 extra2 : extra.getExtra()) {
                                     try {
                                         clueId = Integer.parseInt(extra2.getText().replaceAll("[\\D]", ""));
-                                    } catch (NumberFormatException e){
-                                        //This one wasn't the clue id
-                                    }
+                                    } catch (NumberFormatException ignored){ }
                                 }
                             }
                         }

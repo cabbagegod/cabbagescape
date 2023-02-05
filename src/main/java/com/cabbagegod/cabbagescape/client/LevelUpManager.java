@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LevelUpManager {
-    private static String lastLevelUpMessage = "";
     private static List<Skill> skills;
 
     //These are used for checking if the player has received a level up

@@ -133,14 +133,14 @@ public class PotionTimerManager {
 
     List<Potion> getPotions(){
         List<Potion> potions = new ArrayList<Potion>();
-        potions.add(new Potion(3 * 60, "super antifire potion", "textures/custom/diamond_shovel/herblore_or_potion/super_antifire_potion/super_antifire_potion_4.png"));
-        potions.add(new Potion(6 * 60, "antifire potion", "textures/custom/diamond_shovel/herblore_or_potion/antifire_potion/antifire_potion_4.png"));
-        potions.add(new Potion(12 * 60, "extended antifire", "textures/custom/diamond_shovel/herblore_or_potion/extended_antifire/extended_antifire_4.png"));
-        potions.add(new Potion(6 * 60, "extended super antifire", "textures/custom/diamond_shovel/herblore_or_potion/extended_super_antifire/extended_super_antifire_4.png"));
-        potions.add(new Potion(3 * 60, "agility potion", "textures/custom/diamond_shovel/herblore_or_potion/agility_potion/agility_potion_4.png"));
-        potions.add(new Potion(4 * 60, "magic potion", "textures/custom/diamond_shovel/herblore_or_potion/magic_potion/magic_potion_4.png"));
-        potions.add(new Potion(3 * 60, "hunter potion", "textures/custom/diamond_shovel/herblore_or_potion/hunter_potion/hunter_potion_4.png"));
-        potions.add(new Potion(3 * 60, "fishing potion", "textures/custom/diamond_shovel/herblore_or_potion/fishing_potion/fishing_potion_4.png"));
+        potions.add(new Potion(3 * 60, "super antifire potion", "textures/item/custom/diamond_shovel/herblore_or_potion/super_antifire_potion/super_antifire_potion_4.png"));
+        potions.add(new Potion(6 * 60, "antifire potion", "textures/item/custom/diamond_shovel/herblore_or_potion/antifire_potion/antifire_potion_4.png"));
+        potions.add(new Potion(12 * 60, "extended antifire", "textures/item/custom/diamond_shovel/herblore_or_potion/extended_antifire/extended_antifire_4.png"));
+        potions.add(new Potion(6 * 60, "extended super antifire", "textures/item/custom/diamond_shovel/herblore_or_potion/extended_super_antifire/extended_super_antifire_4.png"));
+        potions.add(new Potion(3 * 60, "agility potion", "textures/item/custom/diamond_shovel/herblore_or_potion/agility_potion/agility_potion_4.png"));
+        potions.add(new Potion(4 * 60, "magic potion", "textures/item/custom/diamond_shovel/herblore_or_potion/magic_potion/magic_potion_4.png"));
+        potions.add(new Potion(3 * 60, "hunter potion", "textures/item/custom/diamond_shovel/herblore_or_potion/hunter_potion/hunter_potion_4.png"));
+        potions.add(new Potion(3 * 60, "fishing potion", "textures/item/custom/diamond_shovel/herblore_or_potion/fishing_potion/fishing_potion_4.png"));
 
         return potions;
     }
