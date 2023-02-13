@@ -13,6 +13,8 @@ import net.minecraft.text.LiteralText;
 public class NotificationManager {
     public static boolean showFlash = false;
     public static String currentNotif = "";
+    private Thread currentThread = null;
+
 
     NotificationSettings settings;
 
@@ -33,20 +35,35 @@ public class NotificationManager {
         if(settings.flashEnabled){
             showFlash = true;
             currentNotif = text;
-            new Thread(() -> {
-                ThreadingUtil.wait(2000);
-                showFlash = false;
-            }).start();
+
+            if(currentThread != null)
+                currentThread.interrupt();
+
+            currentThread = new Thread() {
+                public void run() {
+                    for (int i = 0; i < 20; i++) {
+                        ThreadingUtil.wait(100);
+
+                        if (this.isInterrupted())
+                            return;
+                    }
+                    showFlash = false;
+                }
+            };
+
+            currentThread.start();
         }
     }
 
     public static void onHudRender(MatrixStack matrices, float t){
-        int width = MinecraftClient.getInstance().getWindow().getWidth();
-        int height = MinecraftClient.getInstance().getWindow().getHeight();
+        if(showFlash) {
+            int width = MinecraftClient.getInstance().getWindow().getWidth();
+            int height = MinecraftClient.getInstance().getWindow().getHeight();
 
-        //The color picker texture
-        //Texture transparency for some reason is acting all funny :(
-        //drawTexture(matrices, 0, 0, 0, 0, this.scaledWidth - 150, this.scaledHeight - 150);
-        DrawableHelper.drawCenteredText(matrices, MinecraftClient.getInstance().textRenderer, new LiteralText(NotificationManager.currentNotif), width / 2, height / 2, -1);
+            //The color picker texture
+            //Texture transparency for some reason is acting all funny :(
+            //drawTexture(matrices, 0, 0, 0, 0, this.scaledWidth - 150, this.scaledHeight - 150);
+            DrawableHelper.drawCenteredText(matrices, MinecraftClient.getInstance().textRenderer, new LiteralText(NotificationManager.currentNotif), width / 2, height / 2, -1);
+        }
     }
 }

@@ -30,7 +30,7 @@ public class GroundItemsScreen extends GameOptionsScreen {
     private TextFieldWidget containsKeysTextField;
 
     public GroundItemsScreen() {
-        super(null, null, new LiteralText("Ground Items Options"));
+        super(new PluginsScreen(null, CabbageScapeClient.settings), null, new LiteralText("Ground Items Options"));
 
         this.settings = CabbageScapeClient.settings;
     }

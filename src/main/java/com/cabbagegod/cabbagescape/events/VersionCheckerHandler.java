@@ -4,7 +4,7 @@ import com.cabbagegod.cabbagescape.client.VersionChecker;
 import com.cabbagegod.cabbagescape.ui.UpdateScreen;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 
-public class ServerConnectionHandler implements EventHandler{
+public class VersionCheckerHandler implements EventHandler{
     @Override
     public void start() {
         VersionChecker.Verify();

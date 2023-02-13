@@ -21,8 +21,8 @@ public class PluginsScreen extends GameOptionsScreen {
     private ButtonListWidget buttonList;
     private final Settings settings;
 
-    public PluginsScreen(Screen parent, GameOptions gameOptions, Settings settings) {
-        super(parent, gameOptions, new LiteralText("Plugins Settings"));
+    public PluginsScreen(Screen parent, Settings settings) {
+        super(parent, null, new LiteralText("Plugins Settings"));
 
         this.settings = settings;
     }
@@ -53,7 +53,7 @@ public class PluginsScreen extends GameOptionsScreen {
         for (MinescapePlugins plugin: MinescapePlugins.values()) {
             Object screen = plugin.screen.getDeclaredConstructor().newInstance();
 
-            Option newOption = new ButtonOption(plugin.toString(), (widget) -> {
+            Option newOption = new ButtonOption(plugin.name, (widget) -> {
                 MinecraftClient.getInstance().setScreen((Screen) screen);
             });
             options.add(newOption);

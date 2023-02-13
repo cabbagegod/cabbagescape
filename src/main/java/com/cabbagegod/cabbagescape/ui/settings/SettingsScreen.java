@@ -22,7 +22,7 @@ public class SettingsScreen extends Screen {
         renderBackground(matrices);
 
         addDrawableChild(new ButtonWidget(this.width / 2 - 102, this.height / 4 + 96 + -16, 204, 20, new LiteralText("Plugin Settings"), button -> {
-            MinecraftClient.getInstance().setScreen(new PluginsScreen(this, this.client.options, CabbageScapeClient.settings));
+            MinecraftClient.getInstance().setScreen(new PluginsScreen(this, CabbageScapeClient.settings));
         }));
         addDrawableChild(new ButtonWidget(this.width / 2 - 102, this.height / 4 + 96 + 16, 204, 20, new LiteralText("Done"), button -> {
             MinecraftClient.getInstance().setScreen(new GameMenuScreen(true));
