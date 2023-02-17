@@ -55,8 +55,7 @@ public class GroundItemsScreen extends GameOptionsScreen {
         float blue = (float) settings.groundItemSettings.itemBlue;
 
         RenderSystem.setShaderColor(red / 255, green / 255, blue / 255, 1.0F);
-        Identifier colorPickerIcon = new Identifier("minecraft", "textures/custom/colors/white.png");
-        //Identifier colorPickerIcon = new Identifier("minecraft", "textures/gui/book.png");
+        Identifier colorPickerIcon = new Identifier("minecraft", "textures/block/white_wool.png");
         RenderSystem.setShaderTexture(0, colorPickerIcon);
 
         //The color picker texture
