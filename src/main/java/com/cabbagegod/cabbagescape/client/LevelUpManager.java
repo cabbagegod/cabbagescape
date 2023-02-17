@@ -1,17 +1,11 @@
 package com.cabbagegod.cabbagescape.client;
 
-import com.cabbagegod.cabbagescape.data.DataHandler;
 import com.cabbagegod.cabbagescape.data.Skill;
-import com.cabbagegod.cabbagescape.util.ScreenshotUtil;
-import com.cabbagegod.cabbagescape.util.ThreadingUtil;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.text.LiteralText;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class LevelUpManager {
-    private static String lastLevelUpMessage = "";
     private static List<Skill> skills;
 
     //These are used for checking if the player has received a level up

@@ -1,10 +1,11 @@
 {
   "cabbagescape.newUpdate" : "New Update Available!",
   "category.cabbagescape" : "CabbageScape",
-  "key.cabbagescape.buildmode_key" : "Buildmode Toggle",
-  "key.cabbagescape.home_key" : "Home TP",
   "key.cabbagescape.debug_key" : "Debug",
   "cabbagescape.clueHint": "Clue Step",
-  "options.spiralenabled" : "Spiral:",
-  "options.highlightenabled" : "Block Highlight:"
+  "options.spiralenabled" : "Spiral",
+  "options.highlightenabled" : "Block Highlight",
+  "options.doormarkers" : "Door Markers",
+  "options.notifications.flashenabled" : "Flash Enabled",
+  "options.notifications.soundenabled" : "Sound Enabled"
 }

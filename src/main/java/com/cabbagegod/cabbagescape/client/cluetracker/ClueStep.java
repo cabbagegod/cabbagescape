@@ -1,6 +1,5 @@
 package com.cabbagegod.cabbagescape.client.cluetracker;
 
-import net.fabricmc.loader.impl.lib.sat4j.core.Vec;
 import net.minecraft.client.util.math.Vector3d;
 
 public class ClueStep {

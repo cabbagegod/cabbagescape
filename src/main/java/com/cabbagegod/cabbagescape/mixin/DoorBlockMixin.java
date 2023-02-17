@@ -1,6 +1,6 @@
 package com.cabbagegod.cabbagescape.mixin;
 
-import com.cabbagegod.cabbagescape.events.DoorUseCallback;
+import com.cabbagegod.cabbagescape.callbacks.DoorUseCallback;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.DoorBlock;
 import net.minecraft.entity.player.PlayerEntity;

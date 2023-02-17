@@ -1,12 +1,9 @@
-package com.cabbagegod.cabbagescape.ui;
+package com.cabbagegod.cabbagescape.ui.settings;
 
 import com.cabbagegod.cabbagescape.client.CabbageScapeClient;
-import com.cabbagegod.cabbagescape.client.VersionChecker;
 import com.cabbagegod.cabbagescape.data.GroundItemSettings;
 import com.cabbagegod.cabbagescape.data.Settings;
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.option.GameOptionsScreen;
 import net.minecraft.client.gui.widget.ButtonListWidget;
@@ -17,19 +14,13 @@ import net.minecraft.client.option.DoubleOption;
 import net.minecraft.client.option.GameOptions;
 import net.minecraft.client.option.Option;
 import net.minecraft.client.render.GameRenderer;
-import net.minecraft.client.texture.Sprite;
-import net.minecraft.client.util.InputUtil;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;
-import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import org.apache.commons.lang3.StringUtils;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.stream.Stream;
 
 public class GroundItemsScreen extends GameOptionsScreen {
     private static Option[] OPTIONS;
@@ -38,10 +29,10 @@ public class GroundItemsScreen extends GameOptionsScreen {
     private TextFieldWidget groundItemsListTextField;
     private TextFieldWidget containsKeysTextField;
 
-    public GroundItemsScreen(Screen parent, GameOptions gameOptions, Settings settings) {
-        super(parent, gameOptions, new LiteralText("Ground Items Options"));
+    public GroundItemsScreen() {
+        super(new PluginsScreen(null, CabbageScapeClient.settings), null, new LiteralText("Ground Items Options"));
 
-        this.settings = settings;
+        this.settings = CabbageScapeClient.settings;
     }
 
     protected void init(){
@@ -64,8 +55,7 @@ public class GroundItemsScreen extends GameOptionsScreen {
         float blue = (float) settings.groundItemSettings.itemBlue;
 
         RenderSystem.setShaderColor(red / 255, green / 255, blue / 255, 1.0F);
-        Identifier colorPickerIcon = new Identifier("minecraft", "textures/custom/colors/white.png");
-        //Identifier colorPickerIcon = new Identifier("minecraft", "textures/gui/book.png");
+        Identifier colorPickerIcon = new Identifier("minecraft", "textures/block/white_wool.png");
         RenderSystem.setShaderTexture(0, colorPickerIcon);
 
         //The color picker texture
@@ -139,6 +129,11 @@ public class GroundItemsScreen extends GameOptionsScreen {
         this.containsKeysTextField.setMaxLength(Integer.MAX_VALUE);
         this.containsKeysTextField.setText(parsedTags.toString());
         this.containsKeysTextField.setChangedListener(parsedKeys -> {
+            if(parsedKeys.isEmpty()){
+                settings.containsTags = new ArrayList<String>();
+                return;
+            }
+
             String[] keys = parsedKeys.split(",");
             settings.containsTags = new ArrayList<String>(Arrays.asList(keys));
         });

@@ -1,11 +1,11 @@
 package com.cabbagegod.cabbagescape.client.barrows;
 
+import com.cabbagegod.cabbagescape.client.CabbageScapeClient;
 import com.cabbagegod.cabbagescape.client.blockoutline.PersistentOutlineRenderer;
-import com.cabbagegod.cabbagescape.events.DoorUseCallback;
+import com.cabbagegod.cabbagescape.callbacks.DoorUseCallback;
+import com.cabbagegod.cabbagescape.events.EventHandler;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.minecraft.block.Material;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
@@ -13,18 +13,16 @@ import net.minecraft.entity.decoration.ArmorStandEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
 import net.minecraft.screen.ScreenHandler;
-import net.minecraft.text.LiteralText;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BarrowsHelper {
+public class BarrowsHelper implements EventHandler {
     private static final Bounds BarrowsBounds = new Bounds(new Vec3d(1583,17,-78), new Vec3d(1708,100,48));
     private static final Bounds BarrowsUndergroundBounds = new Bounds(new Vec3d(1583,17,-78), new Vec3d(1708,32,48));
 
-    private static boolean isInBarrows = false;
     private static boolean isInBarrowsUnderground = false;
 
     public static List<BlockPos> trackedDoors = new ArrayList<>();
@@ -37,7 +35,8 @@ public class BarrowsHelper {
     static ArmorStandEntity toragIndicator;
     static ArmorStandEntity veracIndicator;
 
-    public static void register(){
+    @Override
+    public void start() {
         ClientTickEvents.END_CLIENT_TICK.register(BarrowsHelper::tickEvent);
         DoorUseCallback.EVENT.register(BarrowsHelper::onUseDoor);
     }
@@ -47,7 +46,7 @@ public class BarrowsHelper {
             assert client.player != null;
 
             //Check if player is in barrows
-            isInBarrows = BarrowsBounds.isWithinBounds(client.player.getPos());
+            boolean isInBarrows = BarrowsBounds.isWithinBounds(client.player.getPos());
             isInBarrowsUnderground = BarrowsUndergroundBounds.isWithinBounds(client.player.getPos());
 
             if(isInBarrows) {
@@ -120,6 +119,9 @@ public class BarrowsHelper {
         assert MinecraftClient.getInstance().player != null;
 
         if(isInBarrowsUnderground){
+            if(!CabbageScapeClient.settings.barrowsHelperSettings.doorMarkers)
+                return;
+
             if(!trackedDoors.contains(pos)) {
                 trackedDoors.add(pos);
                 PersistentOutlineRenderer.getInstance().addPos(pos);

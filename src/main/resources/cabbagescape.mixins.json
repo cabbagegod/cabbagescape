@@ -7,7 +7,6 @@
     "ChatHudMixin",
     "DoorBlockMixin",
     "GameMenuMixin",
-    "InGameHudMixin",
     "PlayerEntityRendererMixin",
     "WorldRendererMixin"
   ],

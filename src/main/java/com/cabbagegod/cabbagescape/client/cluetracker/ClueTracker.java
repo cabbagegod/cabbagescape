@@ -2,14 +2,14 @@ package com.cabbagegod.cabbagescape.client.cluetracker;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+
 import com.cabbagegod.cabbagescape.client.cluetracker.ClueStep.Difficulty;
-import com.cabbagegod.cabbagescape.data.DataHandler;
 import com.cabbagegod.cabbagescape.data.itemdata.ItemDisplay;
 import com.cabbagegod.cabbagescape.data.itemdata.ItemExtra;
-import com.cabbagegod.cabbagescape.data.itemdata.ItemExtra__1;
 import com.cabbagegod.cabbagescape.data.itemdata.ItemLore;
+import com.cabbagegod.cabbagescape.events.EventHandler;
 import com.cabbagegod.cabbagescape.ui.ClueHintScreen;
-import com.cabbagegod.cabbagescape.ui.UpdateScreen;
 import com.google.gson.Gson;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.minecraft.client.MinecraftClient;
@@ -20,10 +20,15 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 
-public class ClueTracker {
+public class ClueTracker implements EventHandler {
     static List<ClueStep> clueSteps = new ArrayList<ClueStep>();
 
-    public ClueTracker(){
+    @Override
+    public void start() {
+        Setup();
+    }
+
+    public static void Setup(){
         if(clueSteps.size() != 0)
             return;
 
@@ -69,7 +74,6 @@ public class ClueTracker {
     public void register(){
         UseItemCallback.EVENT.register(((player, world, hand) -> {
             ItemStack handItem = player.getStackInHand(Hand.MAIN_HAND);
-
             if(Formatting.strip(handItem.getName().getString().toLowerCase()).equals("clue scroll easy")){
                 if(handItem.hasNbt() && MinecraftClient.getInstance().currentScreen == null) {
                     NbtElement element = handItem.getNbt().get("display");
@@ -81,21 +85,17 @@ public class ClueTracker {
 
                     if(!itemLores.isEmpty()){
                         int clueId = -100;
-
                         //Blame bandit for this
                         for(ItemLore lore : itemLores){
                             for(ItemExtra extra : lore.getExtra()){
-                                //Checks if there is no clue id, like in the test server (thanks zombie :P)
-                                if(extra.getExtra() == null)
-                                    break;
+                                if(extra.getText() == null)
+                                    continue;
+                                if(extra.getText().equals(""))
+                                    continue;
 
-                                for(ItemExtra__1 extra2 : extra.getExtra()) {
-                                    try {
-                                        clueId = Integer.parseInt(extra2.getText().replaceAll("[\\D]", ""));
-                                    } catch (NumberFormatException e){
-                                        //This one wasn't the clue id
-                                    }
-                                }
+                                try {
+                                    clueId = Integer.parseInt(extra.getText());
+                                } catch (NumberFormatException ignored){ }
                             }
                         }
 

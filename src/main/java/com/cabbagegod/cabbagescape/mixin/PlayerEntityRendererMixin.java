@@ -1,6 +1,5 @@
 package com.cabbagegod.cabbagescape.mixin;
 
-import net.minecraft.block.DoorBlock;
 import net.minecraft.client.render.entity.PlayerEntityRenderer;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
@@ -18,9 +17,9 @@ public class PlayerEntityRendererMixin {
             StringBuilder sb = new StringBuilder(nameStr);
             sb.insert(0, "\2477");
             int index = sb.toString().indexOf("CabbageGod");
-            sb.insert(index, "逬\2472");
+            sb.insert(index, "邘\2472");
             index = sb.toString().indexOf("CabbageGod");
-            sb.insert(index + 10, "\247r\2477");
+            sb.insert(index + 10, "\247r邘\2477");
 
             par2 = new LiteralText(sb.toString());
         }

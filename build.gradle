@@ -26,6 +26,11 @@ dependencies {
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+	//Reflection API for EventHandler
+	implementation 'org.reflections:reflections:0.10.2'
+	include 'org.reflections:reflections:0.10.2'
+	include 'org.javassist:javassist:3.29.2-GA'
 }
 
 processResources {
