@@ -48,8 +48,23 @@ public class NotificationSettingsScreen extends GameOptionsScreen {
     }
 
     void setupOptions(){
-        GroundItemSettings settings = this.settings.groundItemSettings;
+        Option flashEnabled = CyclingOption.create("options.notifications.flashenabled", gameOptions -> settings.notificationSettings.flashEnabled, (gameOptions, option, toggle) -> settings.notificationSettings.flashEnabled = toggle);
+        Option soundEnabled = CyclingOption.create("options.notifications.soundenabled", gameOptions -> settings.notificationSettings.soundEnabled, (gameOptions, option, toggle) -> settings.notificationSettings.soundEnabled = toggle);
 
-        OPTIONS = new Option[]{};
+        Option volumeOption = new DoubleOption("volume", 0D, 100.0D, 1.0F, gameOptions -> (double) (settings.notificationSettings.volume * 100), (gameOptions, volume) -> {
+            settings.notificationSettings.volume = (float) (volume / 100);
+        },(gameOptions, option) -> {
+            double d = option.get(gameOptions);
+            return new LiteralText("Volume: " + Math.round(d) + "%");
+        });
+
+        addDrawableChild(new ButtonWidget(this.width / 2 - (150/2), 185, 150, 20, new LiteralText("Save"), button -> {
+            CabbageScapeClient.saveSettings();
+
+            assert this.client != null;
+            this.client.setScreen(this.parent);
+        }));
+
+        OPTIONS = new Option[]{flashEnabled, soundEnabled, volumeOption};
     }
 }

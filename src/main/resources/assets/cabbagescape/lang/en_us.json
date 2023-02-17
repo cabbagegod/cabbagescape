@@ -5,5 +5,7 @@
   "cabbagescape.clueHint": "Clue Step",
   "options.spiralenabled" : "Spiral",
   "options.highlightenabled" : "Block Highlight",
-  "options.doormarkers" : "Door Markers"
+  "options.doormarkers" : "Door Markers",
+  "options.notifications.flashenabled" : "Flash Enabled",
+  "options.notifications.soundenabled" : "Sound Enabled"
 }

@@ -15,7 +15,6 @@ public class NotificationManager {
     public static String currentNotif = "";
     private Thread currentThread = null;
 
-
     NotificationSettings settings;
 
     public NotificationManager(NotificationSettings settings){
