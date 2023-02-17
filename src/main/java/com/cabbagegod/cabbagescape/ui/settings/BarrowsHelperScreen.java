@@ -5,6 +5,7 @@ import com.cabbagegod.cabbagescape.data.GroundItemSettings;
 import com.cabbagegod.cabbagescape.data.Settings;
 import net.minecraft.client.gui.screen.option.GameOptionsScreen;
 import net.minecraft.client.gui.widget.ButtonListWidget;
+import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.option.CyclingOption;
 import net.minecraft.client.option.Option;
 import net.minecraft.client.util.math.MatrixStack;
@@ -39,6 +40,13 @@ public class BarrowsHelperScreen extends GameOptionsScreen {
 
     void setupOptions(){
         Option doorMarkersEnabled = CyclingOption.create("options.doormarkers", gameOptions -> settings.barrowsHelperSettings.doorMarkers, (gameOptions, option, toggle) -> settings.barrowsHelperSettings.doorMarkers = toggle);
+
+        addDrawableChild(new ButtonWidget(this.width / 2 - (150/2), 185, 150, 20, new LiteralText("Save"), button -> {
+            CabbageScapeClient.saveSettings();
+
+            assert this.client != null;
+            this.client.setScreen(this.parent);
+        }));
 
         OPTIONS = new Option[]{doorMarkersEnabled};
     }
