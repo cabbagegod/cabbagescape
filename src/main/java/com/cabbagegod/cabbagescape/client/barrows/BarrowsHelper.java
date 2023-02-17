@@ -1,5 +1,6 @@
 package com.cabbagegod.cabbagescape.client.barrows;
 
+import com.cabbagegod.cabbagescape.client.CabbageScapeClient;
 import com.cabbagegod.cabbagescape.client.blockoutline.PersistentOutlineRenderer;
 import com.cabbagegod.cabbagescape.callbacks.DoorUseCallback;
 import com.cabbagegod.cabbagescape.events.EventHandler;
@@ -118,6 +119,9 @@ public class BarrowsHelper implements EventHandler {
         assert MinecraftClient.getInstance().player != null;
 
         if(isInBarrowsUnderground){
+            if(!CabbageScapeClient.settings.barrowsHelperSettings.doorMarkers)
+                return;
+
             if(!trackedDoors.contains(pos)) {
                 trackedDoors.add(pos);
                 PersistentOutlineRenderer.getInstance().addPos(pos);
