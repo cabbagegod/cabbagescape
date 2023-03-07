@@ -27,3 +27,5 @@ Planned:
 4) Finally, put CabbageScape and the Fabric API into your mods folder, which you can find inside your .minecraft. *If there is no "mods" folder, simply create one.*
 
 Now you're ready to enjoy all the awesome perks of CabbageScape! Make sure you select the Fabric Loader inside your minecraft launcher when starting up the game!
+
+i hate you
