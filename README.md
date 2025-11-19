@@ -19,6 +19,9 @@ Planned:
 * Advanced armor models
 * *TBD*
 
+## Download
+https://www.curseforge.com/minecraft/mc-mods/cabbagescape
+
 ## Setup
 
 1) Download the latest version of the Fabric Loader from [the official website](https://fabricmc.net/) 
